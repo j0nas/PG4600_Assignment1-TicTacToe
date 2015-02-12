@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TicTacToe</string>
+    <string name="header_value">TicTacToe</string>
+    <string name="cross_won">X won!</string>
+    <string name="circle_won">O won!</string>
+    <string name="tie">Tie!</string>
+</resources>
