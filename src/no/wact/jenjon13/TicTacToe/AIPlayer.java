@@ -16,8 +16,8 @@ public abstract class AIPlayer {
     protected int COLS = 3;//GameMain.COLS;  // number of columns
 
     protected Cell[][] cells; // the board's ROWS-by-COLS array of Cells
-    protected Seed mySeed;    // computer's seed
-    protected Seed oppSeed;   // opponent's seed
+    protected TileState myTileState;    // computer's seed
+    protected TileState oppTileState;   // opponent's seed
 
     /**
      * Constructor with reference to game board
@@ -27,11 +27,11 @@ public abstract class AIPlayer {
     }
 
     /**
-     * Set/change the seed used by computer and opponent
+     * Set/change the tileState used by computer and opponent
      */
-    public void setSeed(Seed seed) {
-        this.mySeed = seed;
-        oppSeed = (mySeed == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+    public void setSeed(TileState tileState) {
+        this.myTileState = tileState;
+        oppTileState = (myTileState == TileState.CROSS) ? TileState.NOUGHT : TileState.CROSS;
     }
 
     /**

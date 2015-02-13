@@ -24,7 +24,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gamemainscreen);
 
-        miniMaxAI.setSeed(Seed.NOUGHT);
+        miniMaxAI.setSeed(TileState.NOUGHT);
         int i = 1;
         for (final Cell[] rows : board.cells) {
             for (Cell cell : rows) {
@@ -61,7 +61,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         for (final Cell[] rows : board.cells) {
             for (final Cell cell : rows) {
                 cell.button.setImageBitmap(null);
-                cell.content = Seed.EMPTY;
+                cell.content = TileState.EMPTY;
             }
         }
 
@@ -95,7 +95,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         pressedButton.setImageBitmap(Utilities.decodeSampledBitmapFromResource(getResources(),
                 crossTurn ? R.drawable.cross : R.drawable.circle, 15, 15));
 
-        board.getCellByNumber(getButtonNumberById(v.getId()) - 1).content = (crossTurn ? Seed.CROSS : Seed.NOUGHT);
+        board.getCellByNumber(getButtonNumberById(v.getId()) - 1).content = (crossTurn ? TileState.CROSS : TileState.NOUGHT);
         pressedButton.setOnClickListener(null);
         crossTurn = !crossTurn;
 
@@ -105,10 +105,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     private boolean checkForGameEndingEvents() {
-        final Seed winner = miniMaxAI.hasWon(Seed.CROSS) ? Seed.CROSS : (miniMaxAI.hasWon(Seed.NOUGHT) ? Seed.NOUGHT : Seed.EMPTY);
-        final boolean tied = (winner == Seed.EMPTY) && checkTie();
+        final TileState winner = miniMaxAI.hasWon(TileState.CROSS) ? TileState.CROSS : (miniMaxAI.hasWon(TileState.NOUGHT) ? TileState.NOUGHT : TileState.EMPTY);
+        final boolean tied = (winner == TileState.EMPTY) && checkTie();
 
-        if (tied || winner != Seed.EMPTY) {
+        if (tied || winner != TileState.EMPTY) {
             setGameStatus(winner);
             findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
             board.disableAllButtons();
@@ -118,12 +118,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
         return false;
     }
 
-    private void setGameStatus(Seed winner) {
+    private void setGameStatus(TileState winner) {
         final TextView txtDeclareWinner = (TextView) findViewById(R.id.txtDeclareWinner);
         if (winner == null) {
             txtDeclareWinner.setText("");
         } else {
-            txtDeclareWinner.setText(winner == Seed.EMPTY ? R.string.tie : winner == Seed.CROSS ? R.string.cross_won : R.string.circle_won);
+            txtDeclareWinner.setText(winner == TileState.EMPTY ? R.string.tie : winner == TileState.CROSS ? R.string.cross_won : R.string.circle_won);
         }
     }
 
@@ -163,7 +163,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private boolean checkTie() {
         for (int i = 0; i < board.cells.length; i++) {
             for (int j = 0; j < board.cells[i].length; j++) {
-                if (board.cells[i][j].content == Seed.EMPTY) {
+                if (board.cells[i][j].content == TileState.EMPTY) {
                     return false;
                 }
             }
@@ -171,22 +171,4 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
         return true;
     }
-
-//    private TileState getWinningPlayer() { // TODO. make this method only return winner, not take care of anything else
-//        int[][] winPositions = {
-//                {1, 2, 3}, {1, 5, 9}, {1, 4, 7}, {4, 5, 6}, {7, 8, 9}, {2, 5, 8}, {3, 6, 9}, {3, 5, 7}
-//        };
-//
-//        boolean somebodyWon = false;
-//        for (final int[] winPos : winPositions) {
-//            somebodyWon = xoPos[winPos[0] - 1] != null && xoPos[winPos[1] - 1] != null && xoPos[winPos[2] - 1] != null;
-//            somebodyWon = somebodyWon && xoPos[winPos[0] - 1].equals(xoPos[winPos[1] - 1]) && xoPos[winPos[1] - 1].equals(xoPos[winPos[2] - 1]);
-//
-//            if (somebodyWon) {
-//                return xoPos[winPos[0] - 1];
-//            }
-//        }
-//
-//        return TileState.NOT_SET;
-//    }
 }

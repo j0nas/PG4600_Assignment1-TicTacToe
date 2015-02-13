@@ -3,7 +3,7 @@ package no.wact.jenjon13.TicTacToe;
 import android.widget.ImageButton;
 
 public class Cell {
-    public Seed content = Seed.EMPTY;
+    public TileState content = TileState.EMPTY;
 
     public ImageButton button;
 }
