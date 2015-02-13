@@ -9,3 +9,6 @@ whenever a player plays the fourth sign, remove the first one
 [AI
 TODO: add 1-player vs. AI mode
 TODO: add difficulties
+TODO: externalize all resources in XML files
+TODO: documentation
+TODO: javadoc method headers

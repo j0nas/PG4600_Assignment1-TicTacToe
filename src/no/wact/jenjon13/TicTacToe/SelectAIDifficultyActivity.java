@@ -18,7 +18,7 @@ public class SelectAIDifficultyActivity extends Activity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_ai_difficulty);
 
-        ViewGroup parentLayout = (ViewGroup) findViewById(R.id.layoutMainMenu);
+        ViewGroup parentLayout = (ViewGroup) findViewById(R.id.layoutSelectDifficulty);
         for (int i = 0; i < parentLayout.getChildCount(); i++) {
             parentLayout.getChildAt(i).setOnClickListener(this);
         }
@@ -27,9 +27,8 @@ public class SelectAIDifficultyActivity extends Activity implements View.OnClick
     @Override
     public void onClick(final View v) {
         final Intent intent = new Intent(SelectAIDifficultyActivity.this, GameActivity.class);
-        int i = v.getId();
 
-        switch (i) {
+        switch (v.getId()) {
             case R.id.btnDifficultyEasy:
                 intent.putExtra(difficultyExtraName, DIFFICULTY_EASY);
                 break;
