@@ -7,4 +7,5 @@
     <string name="tie">Tie!</string>
     <string name="start_twoplayer_game">Start Two-player Game</string>
     <string name="start_oneplayer_game">Start One-player Game (vs. AI)</string>
+    <string name="mainmenu">Main Menu</string>
 </resources>

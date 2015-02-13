@@ -1,61 +1,36 @@
 package no.wact.jenjon13.TicTacToe;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class GameActivity extends Activity implements View.OnClickListener {
-    public static final int GRID_SIZE = 9;
-    private static boolean playingVsAI = false;
-    private static boolean crossTurn = true;
-    final TileState[] xoPos = new TileState[GRID_SIZE];
+    private final int GRID_SIZE = 9;
+    private final TileState[] xoPos = new TileState[GRID_SIZE];
+    private boolean playingVsAI = false;
+    private boolean crossTurn = true;
 
-    /**
-     * http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
-     */
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight, width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2, halfWidth = width / 2;
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        findViewById(R.id.btnRematch).setOnClickListener(this);
+        setNonXOOnClickListeners();
         resetUi();
 
         playingVsAI = getIntent().getExtras() != null && getIntent().getExtras().getBoolean("vsCPU");
+    }
+
+    private void setNonXOOnClickListeners() {
+        int[] buttons = {R.id.btnMainMenu, R.id.btnRematch};
+        for (final int button : buttons) {
+            findViewById(button).setOnClickListener(this);
+        }
     }
 
     private void resetUi() {
@@ -76,15 +51,28 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(final View v) {
-        switch (v.getId()) {
-            case R.id.btnRematch:
-                Log.v("onClick", "Clicked btnRematch");
-                resetUi();
-                return;
+        final View foundView = findViewById(v.getId());
+        if (foundView instanceof Button) {
+            switch (v.getId()) {
+                case R.id.btnRematch:
+                    Log.v("onClick", "Clicked btnRematch");
+                    resetUi();
+                    return;
+                case R.id.btnMainMenu:
+                    Log.v("onClick", "Clicked btnMainMenu");
+                    resetUi();
+                    startActivity(new Intent(GameActivity.this, MainMenuActivity.class));
+                    return;
+            }
         }
 
-        final ImageButton pressedButton = (ImageButton) findViewById(v.getId());
-        pressedButton.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+        if (!(foundView instanceof ImageButton)) {
+            Log.e("onClick", "View with id " + v.getId() + " not handled!");
+            return;
+        }
+
+        final ImageButton pressedButton = (ImageButton) foundView;
+        pressedButton.setImageBitmap(Utilities.decodeSampledBitmapFromResource(getResources(),
                 crossTurn ? R.drawable.cross : R.drawable.circle, 15, 15));
 
         xoPos[getButtonNumberById(v.getId()) - 1] = (crossTurn ? TileState.CROSS : TileState.CIRCLE);
@@ -164,9 +152,6 @@ public class GameActivity extends Activity implements View.OnClickListener {
             somebodyWon = somebodyWon && xoPos[winPos[0] - 1].equals(xoPos[winPos[1] - 1]) && xoPos[winPos[1] - 1].equals(xoPos[winPos[2] - 1]);
 
             if (somebodyWon) {
-//                for (final int i : winPos) { TODO: implement background color highlighting
-//                    ((ImageButton) findViewById(getResources().getIdentifier("imageButton" + i, "id", getPackageName()))).setBackgroundColor(223232);
-//                }
                 return xoPos[winPos[0] - 1];
             }
         }
