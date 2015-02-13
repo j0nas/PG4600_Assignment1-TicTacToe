@@ -10,10 +10,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-// TODO: add 1-player vs. AI mode
-public class MainActivity extends Activity implements View.OnClickListener {
+public class GameActivity extends Activity implements View.OnClickListener {
     public static final int GRID_SIZE = 9;
-    public static final boolean playingVsAI = true;
+    private static boolean playingVsAI = false;
     private static boolean crossTurn = true;
     final TileState[] xoPos = new TileState[GRID_SIZE];
 
@@ -55,6 +54,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.main);
         findViewById(R.id.btnRematch).setOnClickListener(this);
         resetUi();
+
+        playingVsAI = getIntent().getExtras() != null && getIntent().getExtras().getBoolean("vsCPU");
     }
 
     private void resetUi() {
@@ -132,12 +133,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private int getButtonNumberById(final int id) {
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < GRID_SIZE + 1; i++) {
             if (id == getResources().getIdentifier("imageButton" + i, "id", getPackageName())) {
                 return i;
             }
         }
 
+        Log.e("getButtonByNumber", "Didn't find id: " + id);
         return -1;
     }
 

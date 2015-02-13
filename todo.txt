@@ -1,10 +1,11 @@
 flytt spillbrettet til et fragment
-AI
 unit tests
 GUI-tests
 gradle-ify
 ekstraher klasser ut fra mainactivity
 decouple presentasjon fra logikk
-(Y)
-
 whenever a player plays the fourth sign, remove the first one
+
+[AI
+TODO: add 1-player vs. AI mode
+TODO: add difficulties
