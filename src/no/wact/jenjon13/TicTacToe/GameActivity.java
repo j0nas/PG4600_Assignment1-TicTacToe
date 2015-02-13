@@ -16,15 +16,16 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     private boolean playingVsAI = false;
     private int aiDifficulty = -1;
+
     private Board board = new Board(3, 3);
-    private MiniMaxAI miniMaxAI = new MiniMaxAI(board);
+    private MiniMaxAI miniMaxAI = new MiniMaxAI(board, crossTurn ? Sign.NOUGHT : Sign.CROSS);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gamemainscreen);
 
-        miniMaxAI.setSeed(TileState.NOUGHT);
+        miniMaxAI.setSign(Sign.NOUGHT);
         int i = 1;
         for (final Cell[] rows : board.cells) {
             for (Cell cell : rows) {
@@ -61,7 +62,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         for (final Cell[] rows : board.cells) {
             for (final Cell cell : rows) {
                 cell.button.setImageBitmap(null);
-                cell.content = TileState.EMPTY;
+                cell.content = Sign.EMPTY;
             }
         }
 
@@ -95,7 +96,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         pressedButton.setImageBitmap(Utilities.decodeSampledBitmapFromResource(getResources(),
                 crossTurn ? R.drawable.cross : R.drawable.circle, 15, 15));
 
-        board.getCellByNumber(getButtonNumberById(v.getId()) - 1).content = (crossTurn ? TileState.CROSS : TileState.NOUGHT);
+        board.getCellByNumber(getButtonNumberById(v.getId()) - 1).content = (crossTurn ? Sign.CROSS : Sign.NOUGHT);
         pressedButton.setOnClickListener(null);
         crossTurn = !crossTurn;
 
@@ -105,10 +106,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     private boolean checkForGameEndingEvents() {
-        final TileState winner = miniMaxAI.hasWon(TileState.CROSS) ? TileState.CROSS : (miniMaxAI.hasWon(TileState.NOUGHT) ? TileState.NOUGHT : TileState.EMPTY);
-        final boolean tied = (winner == TileState.EMPTY) && checkTie();
+        final Sign winner = miniMaxAI.hasWon(Sign.CROSS) ? Sign.CROSS : (miniMaxAI.hasWon(Sign.NOUGHT) ? Sign.NOUGHT : Sign.EMPTY);
+        final boolean tied = (winner == Sign.EMPTY) && checkTie();
 
-        if (tied || winner != TileState.EMPTY) {
+        if (tied || winner != Sign.EMPTY) {
             setGameStatus(winner);
             findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
             board.disableAllButtons();
@@ -118,12 +119,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
         return false;
     }
 
-    private void setGameStatus(TileState winner) {
+    private void setGameStatus(Sign winner) {
         final TextView txtDeclareWinner = (TextView) findViewById(R.id.txtDeclareWinner);
         if (winner == null) {
             txtDeclareWinner.setText("");
         } else {
-            txtDeclareWinner.setText(winner == TileState.EMPTY ? R.string.tie : winner == TileState.CROSS ? R.string.cross_won : R.string.circle_won);
+            txtDeclareWinner.setText(winner == Sign.EMPTY ? R.string.tie : winner == Sign.CROSS ? R.string.cross_won : R.string.circle_won);
         }
     }
 
@@ -131,15 +132,14 @@ public class GameActivity extends Activity implements View.OnClickListener {
         switch (aiDifficulty) {
             case SelectAIDifficultyActivity.DIFFICULTY_EASY:
                 while (true) {
-                    final ImageButton buttonById = getButtonByNumber(1 + (int) (Math.random() * GRID_SIZE));
-                    if (buttonById.hasOnClickListeners()) {
-                        onClick(buttonById);
+                    final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * GRID_SIZE));
+                    if (button.hasOnClickListeners()) {
+                        onClick(button);
                         return;
                     }
                 }
 
-            case SelectAIDifficultyActivity.DIFFICULTY_MEDIUM: // FIXME
-            case SelectAIDifficultyActivity.DIFFICULTY_HARD:
+            case SelectAIDifficultyActivity.DIFFICULTY_MEDIUM:
                 final int[] move = miniMaxAI.move();
                 onClick(board.cells[move[0]][move[1]].button);
         }
@@ -163,7 +163,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private boolean checkTie() {
         for (int i = 0; i < board.cells.length; i++) {
             for (int j = 0; j < board.cells[i].length; j++) {
-                if (board.cells[i][j].content == TileState.EMPTY) {
+                if (board.cells[i][j].content == Sign.EMPTY) {
                     return false;
                 }
             }

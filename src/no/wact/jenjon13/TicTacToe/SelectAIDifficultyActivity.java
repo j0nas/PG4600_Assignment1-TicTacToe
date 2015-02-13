@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 public class SelectAIDifficultyActivity extends Activity implements View.OnClickListener {
     public static final int DIFFICULTY_EASY = 1;
     public static final int DIFFICULTY_MEDIUM = 2;
-    public static final int DIFFICULTY_HARD = 3;
     public static final String difficultyExtraName = "difficulty";
 
     @Override
@@ -34,9 +33,6 @@ public class SelectAIDifficultyActivity extends Activity implements View.OnClick
                 break;
             case R.id.btnDifficultyMedium:
                 intent.putExtra(difficultyExtraName, DIFFICULTY_MEDIUM);
-                break;
-            case R.id.btnDifficultyHard:
-                intent.putExtra(difficultyExtraName, DIFFICULTY_HARD);
                 break;
             default:
                 Log.e("onClick", "Unhandled onClick on view with id: " + v.getId());

@@ -4,7 +4,7 @@ package no.wact.jenjon13.TicTacToe;
  * Abstract superclass for all AI players with different strategies.
  * To construct an AI player:
  * 1. Construct an instance (of its subclass) with the game Board
- * 2. Call setSeed() to set the computer's seed
+ * 2. Call setSign() to set the computer's seed
  * 3. Call move() which returns the next move in an int[2] array of {row, col}.
  * <p>
  * The implementation subclasses need to override abstract method move().
@@ -12,26 +12,24 @@ package no.wact.jenjon13.TicTacToe;
  * Assume that next move is available, i.e., not game-over yet.
  */
 public abstract class AIPlayer {
-    protected int ROWS = 3;//GameMain.ROWS;  // number of rows
-    protected int COLS = 3;//GameMain.COLS;  // number of columns
+    protected int ROWS = 3; // TODO make variable!
+    protected int COLS = 3;
 
-    protected Cell[][] cells; // the board's ROWS-by-COLS array of Cells
-    protected TileState myTileState;    // computer's seed
-    protected TileState oppTileState;   // opponent's seed
+    protected Cell[][] cells;
+    protected Sign mySign;
+    protected Sign oppSign;
 
     /**
      * Constructor with reference to game board
      */
-    public AIPlayer(Board board) {
+    public AIPlayer(Board board, Sign sign) {
         cells = board.cells;
+        setSign(sign);
     }
 
-    /**
-     * Set/change the tileState used by computer and opponent
-     */
-    public void setSeed(TileState tileState) {
-        this.myTileState = tileState;
-        oppTileState = (myTileState == TileState.CROSS) ? TileState.NOUGHT : TileState.CROSS;
+    public void setSign(Sign sign) {
+        this.mySign = sign;
+        oppSign = (mySign == Sign.CROSS) ? Sign.NOUGHT : Sign.CROSS;
     }
 
     /**

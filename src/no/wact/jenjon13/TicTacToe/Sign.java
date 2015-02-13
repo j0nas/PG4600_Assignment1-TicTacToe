@@ -1,6 +1,6 @@
 package no.wact.jenjon13.TicTacToe;
 
-public enum TileState {
+public enum Sign {
     CROSS,
     NOUGHT,
     EMPTY

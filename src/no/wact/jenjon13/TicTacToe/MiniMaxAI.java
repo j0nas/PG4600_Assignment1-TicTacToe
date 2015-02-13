@@ -16,8 +16,8 @@ public class MiniMaxAI extends AIPlayer {
     /**
      * Constructor with the given game board
      */
-    public MiniMaxAI(Board board) {
-        super(board);
+    public MiniMaxAI(Board board, Sign sign) {
+        super(board, sign);
     }
 
     /**
@@ -25,7 +25,7 @@ public class MiniMaxAI extends AIPlayer {
      */
     @Override
     public int[] move() {
-        int[] result = minimax(2, myTileState, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        int[] result = minimax(2, mySign, Integer.MIN_VALUE, Integer.MAX_VALUE);
         return new int[]{result[1], result[2]};
     }
 
@@ -33,11 +33,11 @@ public class MiniMaxAI extends AIPlayer {
      * Recursive minimax at level of depth for either maximizing or minimizing player.
      * Return int[3] of {score, row, col}
      */
-    private int[] minimax(int depth, TileState player, int alpha, int beta) {
+    private int[] minimax(int depth, Sign player, int alpha, int beta) {
         // Generate possible next moves in a list of int[2] of {row, col}.
         List<int[]> nextMoves = generateMoves();
 
-        // myTileState is maximizing; while oppTileState is minimizing
+        // mySign is maximizing; while oppSign is minimizing
         int score, bestRow = -1, bestCol = -1;
 
         if (nextMoves.isEmpty() || depth == 0) {
@@ -48,15 +48,15 @@ public class MiniMaxAI extends AIPlayer {
             for (int[] move : nextMoves) {
                 // try this move for the current "player"
                 cells[move[0]][move[1]].content = player;
-                if (player == myTileState) {  // myTileState (computer) is maximizing player
-                    score = minimax(depth - 1, oppTileState, alpha, beta)[0];
+                if (player == mySign) {  // mySign (computer) is maximizing player
+                    score = minimax(depth - 1, oppSign, alpha, beta)[0];
                     if (score > alpha) {
                         alpha = score;
                         bestRow = move[0];
                         bestCol = move[1];
                     }
-                } else {  // oppTileState is minimizing player
-                    score = minimax(depth - 1, myTileState, alpha, beta)[0];
+                } else {  // oppSign is minimizing player
+                    score = minimax(depth - 1, mySign, alpha, beta)[0];
                     if (score < beta) {
                         beta = score;
                         bestRow = move[0];
@@ -64,11 +64,11 @@ public class MiniMaxAI extends AIPlayer {
                     }
                 }
                 // undo move
-                cells[move[0]][move[1]].content = TileState.EMPTY;
+                cells[move[0]][move[1]].content = Sign.EMPTY;
                 // cut-off
                 if (alpha >= beta) break;
             }
-            return new int[]{(player == myTileState) ? alpha : beta, bestRow, bestCol};
+            return new int[]{(player == mySign) ? alpha : beta, bestRow, bestCol};
         }
     }
 
@@ -80,14 +80,14 @@ public class MiniMaxAI extends AIPlayer {
         List<int[]> nextMoves = new ArrayList<int[]>(); // allocate List
 
         // If gameover, i.e., no next move
-        if (hasWon(myTileState) || hasWon(oppTileState)) {
+        if (hasWon(mySign) || hasWon(oppSign)) {
             return nextMoves;   // return empty list
         }
 
         // Search for empty cells and add to the List
         for (int row = 0; row < ROWS; ++row) {
             for (int col = 0; col < COLS; ++col) {
-                if (cells[row][col].content == TileState.EMPTY) {
+                if (cells[row][col].content == Sign.EMPTY) {
                     nextMoves.add(new int[]{row, col});
                 }
             }
@@ -128,25 +128,25 @@ public class MiniMaxAI extends AIPlayer {
         int score = 0;
 
         // First cell
-        if (cells[row1][col1].content == myTileState) {
+        if (cells[row1][col1].content == mySign) {
             score = 1;
-        } else if (cells[row1][col1].content == oppTileState) {
+        } else if (cells[row1][col1].content == oppSign) {
             score = -1;
         }
 
         // Second cell
-        if (cells[row2][col2].content == myTileState) {
-            if (score == 1) {   // cell1 is myTileState
+        if (cells[row2][col2].content == mySign) {
+            if (score == 1) {   // cell1 is mySign
                 score = 10;
-            } else if (score == -1) {  // cell1 is oppTileState
+            } else if (score == -1) {  // cell1 is oppSign
                 return 0;
             } else {  // cell1 is empty
                 score = 1;
             }
-        } else if (cells[row2][col2].content == oppTileState) {
-            if (score == -1) { // cell1 is oppTileState
+        } else if (cells[row2][col2].content == oppSign) {
+            if (score == -1) { // cell1 is oppSign
                 score = -10;
-            } else if (score == 1) { // cell1 is myTileState
+            } else if (score == 1) { // cell1 is mySign
                 return 0;
             } else {  // cell1 is empty
                 score = -1;
@@ -154,18 +154,18 @@ public class MiniMaxAI extends AIPlayer {
         }
 
         // Third cell
-        if (cells[row3][col3].content == myTileState) {
-            if (score > 0) {  // cell1 and/or cell2 is myTileState
+        if (cells[row3][col3].content == mySign) {
+            if (score > 0) {  // cell1 and/or cell2 is mySign
                 score *= 10;
-            } else if (score < 0) {  // cell1 and/or cell2 is oppTileState
+            } else if (score < 0) {  // cell1 and/or cell2 is oppSign
                 return 0;
             } else {  // cell1 and cell2 are empty
                 score = 1;
             }
-        } else if (cells[row3][col3].content == oppTileState) {
-            if (score < 0) {  // cell1 and/or cell2 is oppTileState
+        } else if (cells[row3][col3].content == oppSign) {
+            if (score < 0) {  // cell1 and/or cell2 is oppSign
                 score *= 10;
-            } else if (score > 1) {  // cell1 and/or cell2 is myTileState
+            } else if (score > 1) {  // cell1 and/or cell2 is mySign
                 return 0;
             } else {  // cell1 and cell2 are empty
                 score = -1;
@@ -177,7 +177,7 @@ public class MiniMaxAI extends AIPlayer {
     /**
      * Returns true if thePlayer wins
      */
-    public boolean hasWon(TileState thePlayer) {
+    public boolean hasWon(Sign thePlayer) {
         int pattern = 0b000000000;  // 9-bit pattern for the 9 cells
         for (int row = 0; row < ROWS; ++row) {
             for (int col = 0; col < COLS; ++col) {
