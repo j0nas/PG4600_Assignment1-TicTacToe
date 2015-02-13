@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 
 public class Utilities {
     private Utilities() {
+        throw new InstantiationError("This class cannot be instantiated.");
     }
 
     /**
