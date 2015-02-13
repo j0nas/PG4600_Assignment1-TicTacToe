@@ -10,15 +10,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 // TODO: add 1-player vs. AI mode
 public class MainActivity extends Activity implements View.OnClickListener {
+    public static final int GRID_SIZE = 9;
+    public static final boolean playingVsAI = true;
     private static boolean crossTurn = true;
-    private static Map<ImageButton, Integer> buttonMap = new HashMap<>(); // Button and its respective id
-    Boolean[] xoPos = new Boolean[9]; // Not set = null, cross = true, circle = false
+    final TileState[] xoPos = new TileState[GRID_SIZE];
 
     /**
      * http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
@@ -56,11 +53,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
-        for (int i = 1; i < 10; i++) {
-            buttonMap.put((ImageButton) findViewById(getResources().getIdentifier("imageButton" + i, "id", getPackageName())), i);
-        }
-
         findViewById(R.id.btnRematch).setOnClickListener(this);
         resetUi();
     }
@@ -68,6 +60,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void resetUi() {
         ((TextView) findViewById(R.id.txtDeclareWinner)).setText("");
         findViewById(R.id.btnRematch).setVisibility(View.GONE);
+        crossTurn = true;
 
         for (int i = 1; i < 10; i++) {
             final ImageButton button = (ImageButton) findViewById(getResources().getIdentifier("imageButton" + i, "id", getPackageName()));
@@ -76,7 +69,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         for (int i = 0; i < xoPos.length; i++) {
-            xoPos[i] = null;
+            xoPos[i] = TileState.NOT_SET;
         }
     }
 
@@ -92,29 +85,73 @@ public class MainActivity extends Activity implements View.OnClickListener {
         final ImageButton pressedButton = (ImageButton) findViewById(v.getId());
         pressedButton.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 crossTurn ? R.drawable.cross : R.drawable.circle, 15, 15));
-        xoPos[buttonMap.get(pressedButton) - 1] = crossTurn;
-        pressedButton.setOnClickListener(null);
 
-        if (checkWin() || checkTie()) {
-            findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
-            // TODO remove listeners from buttons
+        xoPos[getButtonNumberById(v.getId()) - 1] = (crossTurn ? TileState.CROSS : TileState.CIRCLE);
+        pressedButton.setOnClickListener(null);
+        crossTurn = !crossTurn;
+
+        if (!checkForGameEndingEvents() && (playingVsAI && !crossTurn)) {
+            cpuMove();
+        }
+    }
+
+    private boolean checkForGameEndingEvents() {
+        boolean someoneWon = false;
+        TileState winingPlayer = getWinningPlayer();
+        if (someoneWon = !winingPlayer.equals(TileState.NOT_SET)) {
+            ((TextView) findViewById(R.id.txtDeclareWinner)).setText(winingPlayer.equals(TileState.CROSS) ? R.string.cross_won : R.string.circle_won);
         }
 
-        crossTurn = !crossTurn;
+        final boolean tied = !someoneWon && checkTie();
+        if (tied) {
+            ((TextView) findViewById(R.id.txtDeclareWinner)).setText(R.string.tie);
+        }
+
+        if (tied || someoneWon) {
+            findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
+            for (int i = 0; i < GRID_SIZE; i++) {
+                getButtonByNumber(i + 1).setOnClickListener(null);
+            }
+        }
+
+        return tied || someoneWon;
+    }
+
+    private void cpuMove() {
+        while (true) {
+            final ImageButton buttonById = getButtonByNumber(1 + (int) (Math.random() * GRID_SIZE));
+            if (buttonById.hasOnClickListeners()) {
+                onClick(buttonById);
+                return;
+            }
+        }
+    }
+
+    private ImageButton getButtonByNumber(final int i) {
+        return (ImageButton) findViewById(getResources().getIdentifier("imageButton" + i, "id", getPackageName()));
+    }
+
+    private int getButtonNumberById(final int id) {
+        for (int i = 1; i < 10; i++) {
+            if (id == getResources().getIdentifier("imageButton" + i, "id", getPackageName())) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private boolean checkTie() {
-        for (final Boolean pos : xoPos) {
-            if (pos == null) {
+        for (final TileState pos : xoPos) {
+            if (pos == null || pos.equals(TileState.NOT_SET)) {
                 return false;
             }
         }
 
-        ((TextView) findViewById(R.id.txtDeclareWinner)).setText(R.string.tie);
         return true;
     }
 
-    private boolean checkWin() { // TODO. make this method only return winner, not take care of anything else
+    private TileState getWinningPlayer() { // TODO. make this method only return winner, not take care of anything else
         int[][] winPositions = {
                 {1, 2, 3}, {1, 5, 9}, {1, 4, 7}, {4, 5, 6}, {7, 8, 9}, {2, 5, 8}, {3, 6, 9}, {3, 5, 7}
         };
@@ -128,13 +165,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //                for (final int i : winPos) { TODO: implement background color highlighting
 //                    ((ImageButton) findViewById(getResources().getIdentifier("imageButton" + i, "id", getPackageName()))).setBackgroundColor(223232);
 //                }
-
-                ((TextView) findViewById(R.id.txtDeclareWinner))
-                        .setText(xoPos[winPos[0] - 1] ? R.string.cross_won : R.string.circle_won);
-                return true;
+                return xoPos[winPos[0] - 1];
             }
         }
 
-        return false;
+        return TileState.NOT_SET;
     }
 }
