@@ -5,11 +5,33 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:weightSum="1">
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/header_value"
-            android:id="@+id/header"/>
+    <RelativeLayout
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/game_player1"
+                android:id="@+id/gamePlayer1Text"
+                android:singleLine="true"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/game_vstxt"
+                android:id="@+id/gamePlayerVsText"
+                android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:singleLine="true"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/game_player2txt"
+                android:id="@+id/gamePlayer2Text"
+                android:layout_alignParentTop="true" android:layout_alignParentEnd="true" android:singleLine="true"/>
+    </RelativeLayout>
     <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
@@ -62,20 +84,20 @@
                 android:id="@+id/imageButton9" android:layout_row="2" android:layout_column="2"
                 android:minHeight="200px" android:minWidth="200px" android:maxHeight="200px" android:maxWidth="200px"/>
     </GridLayout>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mainmenu"
+            android:id="@+id/btnMainMenu"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/game_rematch"
+            android:id="@+id/btnRematch" android:layout_gravity="center_horizontal" android:visibility="invisible"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/txtDeclareWinner" android:layout_gravity="center_horizontal"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mainmenu"
-            android:id="@+id/btnMainMenu" android:layout_gravity="center_horizontal"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/game_rematch"
-            android:id="@+id/btnRematch" android:layout_gravity="center_horizontal" android:visibility="invisible"/>
 </LinearLayout>
 

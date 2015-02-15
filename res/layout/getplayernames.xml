@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/getplayernames_playernametxt"
+            android:id="@+id/txtEnterPlayerNames" android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="@string/getplayernames_player1name"
+            android:ems="10"
+            android:id="@+id/txtPlayer1Name" android:layout_centerVertical="true"
+            android:layout_alignEnd="@+id/txtEnterPlayerNames"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="@string/getplayernames_player2name"
+            android:ems="10"
+            android:id="@+id/txtPlayer2Name"
+            android:layout_below="@+id/txtPlayer1Name" android:layout_alignStart="@+id/txtPlayer1Name"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/btnEnterPlayerNames_Start" android:layout_below="@+id/txtPlayer2Name"
+            android:layout_alignStart="@id/txtPlayer1Name" android:layout_alignEnd="@+id/txtPlayer2Name"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:id="@+id/btnEnterPlayerNames_Back" android:layout_below="@+id/btnEnterPlayerNames_Start"
+            android:layout_alignStart="@+id/btnEnterPlayerNames_Start"
+            android:layout_alignEnd="@+id/btnEnterPlayerNames_Start"/>
+</RelativeLayout>

@@ -8,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class SelectAIDifficultyActivity extends Activity implements View.OnClickListener {
-    public static final int DIFFICULTY_EASY = 1;
-    public static final int DIFFICULTY_MEDIUM = 2;
-    public static final String difficultyExtraName = "difficulty";
+    public static final String DIFFICULTY_EASY = "1";
+    public static final String DIFFICULTY_MEDIUM = "2";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -25,14 +24,13 @@ public class SelectAIDifficultyActivity extends Activity implements View.OnClick
 
     @Override
     public void onClick(final View v) {
-        final Intent intent = new Intent(SelectAIDifficultyActivity.this, GameActivity.class);
-
+        final Intent intent = new Intent(SelectAIDifficultyActivity.this, GetPlayerNamesActivity.class);
         switch (v.getId()) {
             case R.id.btnDifficultyEasy:
-                intent.putExtra(difficultyExtraName, DIFFICULTY_EASY);
+                intent.putExtra(getResources().getString(R.string.selectaidifficulty_difficulty), DIFFICULTY_EASY);
                 break;
             case R.id.btnDifficultyMedium:
-                intent.putExtra(difficultyExtraName, DIFFICULTY_MEDIUM);
+                intent.putExtra(getResources().getString(R.string.selectaidifficulty_difficulty), DIFFICULTY_MEDIUM);
                 break;
             default:
                 Log.e("onClick", "Unhandled onClick on view with id: " + v.getId());

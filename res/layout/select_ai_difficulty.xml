@@ -9,16 +9,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/select_ai_difficulty_select_difficutly"
+            android:text="@string/selectaidifficulty_selectdifficutly"
             android:id="@+id/txtSelectDifficulty" android:layout_gravity="center_horizontal"/>
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_ai_difficulty_easy"
+            android:text="@string/selectaidifficulty_easy"
             android:id="@+id/btnDifficultyEasy" android:layout_gravity="center_horizontal"/>
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_ai_difficulty_medium"
+            android:text="@string/selectaidifficulty_medium"
             android:id="@+id/btnDifficultyMedium" android:layout_gravity="center_horizontal"/>
 </LinearLayout>

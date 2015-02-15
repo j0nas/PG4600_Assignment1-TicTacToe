@@ -27,7 +27,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.btnStart2pGame:
-                startActivity(new Intent(MainMenuActivity.this, GameActivity.class));
+                startActivity(new Intent(MainMenuActivity.this, GetPlayerNamesActivity.class));
                 break;
 //            case R.id.btnAboutGame: TODO
 //            case R.id.btnHighScores: TODO
