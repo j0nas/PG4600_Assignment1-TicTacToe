@@ -5,15 +5,15 @@
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="19"/>
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        <activity android:name=".MainMenuActivity"
+        <activity android:name=".activities.MainMenuActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity"/>
-        <activity android:name=".SelectAIDifficultyActivity"/>
-        <activity android:name=".GetPlayerNamesActivity"/>
+        <activity android:name=".activities.GameActivity"/>
+        <activity android:name=".activities.SelectAIDifficultyActivity"/>
+        <activity android:name=".activities.GetPlayerNamesActivity"/>
     </application>
 </manifest>

@@ -17,8 +17,8 @@
             android:inputType="textPersonName"
             android:text="@string/getplayernames_player1name"
             android:ems="10"
-            android:id="@+id/txtPlayer1Name" android:layout_centerVertical="true"
-            android:layout_alignEnd="@+id/txtEnterPlayerNames"/>
+            android:id="@+id/txtPlayer1Name"
+            android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:padding="10dp">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/about_txtTitle"
+            android:layout_marginTop="75dp" android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/about_authortxt"
+            android:id="@+id/about_txtAuthor" android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:linksClickable="false" android:gravity="center_horizontal"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/about_wikiquotetxt"
+            android:id="@+id/about_txtWikiquote"
+            android:textStyle="italic" android:layout_below="@+id/about_txtTitle"
+            android:layout_marginTop="37dp"
+            android:layout_alignParentEnd="true" android:layout_alignParentStart="true"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/about_wikiquotesourcetxt"
+            android:id="@+id/about_txtWikiquoteSource"
+            android:layout_below="@+id/about_txtWikiquote" android:layout_alignStart="@+id/about_txtWikiquote"/>
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about_backbtn"
+            android:id="@+id/about_back" android:layout_above="@+id/about_txtAuthor"
+            android:layout_centerHorizontal="true"/>
+</RelativeLayout>

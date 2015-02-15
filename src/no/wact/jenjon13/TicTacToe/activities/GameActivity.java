@@ -1,4 +1,4 @@
-package no.wact.jenjon13.TicTacToe;
+package no.wact.jenjon13.TicTacToe.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import no.wact.jenjon13.TicTacToe.*;
 
 public class GameActivity extends Activity implements View.OnClickListener {
     private final int GRID_SIZE = 9;
