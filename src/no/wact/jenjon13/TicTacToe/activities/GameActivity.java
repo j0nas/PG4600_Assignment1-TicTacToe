@@ -34,17 +34,17 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
         resetUi();
 
+        final TextView textView = (TextView) findViewById(R.id.gamePlayer1Text);
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        textView.setText(getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE)
+                .getString("player1name", getResources().getString(R.id.txtPlayer1Name)));
+
+        ((TextView) findViewById(R.id.gamePlayer2Text)).setText(
+                getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE).getString("player2name",
+                        getResources().getString(R.id.txtPlayer1Name)));
+
         final Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            final TextView textView = (TextView) findViewById(R.id.gamePlayer1Text);
-            textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-            textView.setText(getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE)
-                    .getString("player1name", getResources().getString(R.id.txtPlayer1Name)));
-
-            ((TextView) findViewById(R.id.gamePlayer2Text)).setText(
-                    getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE).getString("player2name",
-                            getResources().getString(R.id.txtPlayer1Name)));
-
             if ((aiDifficulty = extras.getString(getResources().getString(R.string.selectaidifficulty_difficulty))) != null) {
                 Log.v("onCreate", "Playing with " + aiDifficulty + " difficulty.");
                 ((TextView) findViewById(R.id.gamePlayer2Text)).setText("CPU"); // FIXME externalize to strings.xml
@@ -147,7 +147,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
             txtDeclareWinner.setText(R.string.game_tie);
         } else {
             txtDeclareWinner.setText(winner == Sign.CROSS ?
-                    R.string.getplayernames_player1name : R.string.getplayernames_player2name);
+                    getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE)
+                            .getString("player1name", getResources().getString(R.id.txtPlayer1Name)) :
+                    getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE)
+                            .getString("player2name", getResources().getString(R.id.txtPlayer2Name)));
             txtDeclareWinner.append(" won!");
         }
 

@@ -15,5 +15,6 @@
         <activity android:name=".activities.GameActivity"/>
         <activity android:name=".activities.SelectAIDifficultyActivity"/>
         <activity android:name=".activities.GetPlayerNamesActivity"/>
+        <activity android:name=".activities.AboutActivity"/>
     </application>
 </manifest>
