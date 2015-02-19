@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="gridSize">9</integer>
+    <integer name="grid_width">3</integer>
+    <integer name="grid_height">3</integer>
+</resources>

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import no.wact.jenjon13.TicTacToe.*;
 
 public class GameActivity extends Activity implements View.OnClickListener {
-    private final int GRID_SIZE = 9;
+    private int gridSize = 9;
     private boolean crossTurn = true;
     private String aiDifficulty = null;
     private Board board = new Board(3, 3);
@@ -23,6 +23,8 @@ public class GameActivity extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
+
+        gridSize = getResources().getInteger(R.integer.gridSize);
 
         miniMaxAI.setSign(Sign.NOUGHT);
         int i = 1;
@@ -160,7 +162,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         switch (aiDifficulty) {
             case "1": // getResources().getString(R.string.): FIXME
                 while (true) {
-                    final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * GRID_SIZE));
+                    final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * gridSize));
                     if (button.hasOnClickListeners()) {
                         onClick(button);
                         return;
@@ -178,7 +180,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     private int getButtonNumberById(final int id) {
-        for (int i = 1; i < GRID_SIZE + 1; i++) {
+        for (int i = 1; i < gridSize + 1; i++) {
             if (id == getResources().getIdentifier("imageButton" + i, "id", getPackageName())) {
                 return i;
             }
