@@ -10,6 +10,7 @@ public class ResourceStrings {
 
     public static final String aiDifficulty1 = "1";
     public static final String aiDifficulty2 = "2";
+    public static final String highscoreValues = "highscores";
 
     private ResourceStrings() {
     }
