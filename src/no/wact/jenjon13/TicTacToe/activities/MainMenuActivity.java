@@ -14,7 +14,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainmenu);
 
-        ViewGroup parentLayout = (ViewGroup) findViewById(R.id.layoutMainMenu);
+        final ViewGroup parentLayout = (ViewGroup) findViewById(R.id.layoutMainMenu);
         for (int i = 0; i < parentLayout.getChildCount(); i++) {
             parentLayout.getChildAt(i).setOnClickListener(this);
         }
