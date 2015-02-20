@@ -15,10 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.GameActivity" />
         <activity android:name=".activities.SelectAIDifficultyActivity" />
         <activity android:name=".activities.GetPlayerNamesActivity" />
         <activity android:name=".activities.AboutActivity" />
-        <activity android:name=".BETTER.JonasActivity" />
+        <activity android:name=".activities.GameScreenActivity" />
     </application>
 </manifest>

@@ -40,3 +40,5 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         }
     }
 }
+
+// TODO remove unused resources

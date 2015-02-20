@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import no.wact.jenjon13.TicTacToe.R;
+import no.wact.jenjon13.TicTacToe.statics.IntentStrings;
+import no.wact.jenjon13.TicTacToe.statics.ResourceStrings;
 
 public class GetPlayerNamesActivity extends Activity implements View.OnClickListener {
     private String difficultyLevel = null;
@@ -26,7 +28,7 @@ public class GetPlayerNamesActivity extends Activity implements View.OnClickList
 
         for (int i = 0; i < playerFields.length; i++) {
             ((TextView) findViewById(playerFields[i])).setText(
-                    getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE)
+                    getSharedPreferences(ResourceStrings.sharedPrefs, MODE_PRIVATE)
                             .getString("player" + (i + 1) + "name", getResources().getString(savedPlayerNames[i])));
         }
 
@@ -42,16 +44,17 @@ public class GetPlayerNamesActivity extends Activity implements View.OnClickList
                 startActivity(new Intent(GetPlayerNamesActivity.this, MainMenuActivity.class));
                 return;
             case R.id.btnEnterPlayerNames_Start:
-                getSharedPreferences("TicTacToe_Preferences", MODE_PRIVATE)
+                getSharedPreferences(ResourceStrings.sharedPrefs, MODE_PRIVATE)
                         .edit()
-                        .putString("player1name", ((TextView) findViewById(R.id.txtPlayer1Name)).getText().toString())
-                        .putString("player2name", ((TextView) findViewById(R.id.txtPlayer2Name)).getText().toString())
+                        .putString(ResourceStrings.player1name, ((TextView) findViewById(R.id.txtPlayer1Name)).getText().toString())
+                        .putString(ResourceStrings.player2name, ((TextView) findViewById(R.id.txtPlayer2Name)).getText().toString())
                         .commit();
 
-                final Intent intent = new Intent(GetPlayerNamesActivity.this, GameActivity.class);
+                final Intent intent = new Intent(GetPlayerNamesActivity.this, GameScreenActivity.class);
                 if (difficultyLevel != null) {
-                    intent.putExtra(getResources().getString(R.string.selectaidifficulty_difficulty), difficultyLevel);
+                    intent.putExtra(IntentStrings.difficulty, difficultyLevel);
                 }
+
                 startActivity(intent);
         }
     }

@@ -12,7 +12,7 @@ package no.wact.jenjon13.TicTacToe;
  * Assume that next move is available, i.e., not game-over yet.
  */
 public abstract class AIPlayer {
-    protected int ROWS = 3; // TODO make variable!
+    protected int ROWS = 3; // TODO get from Board -- also, make variable
     protected int COLS = 3;
 
     protected Cell[][] cells;

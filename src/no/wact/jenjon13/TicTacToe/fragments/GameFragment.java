@@ -1,7 +1,8 @@
-package no.wact.jenjon13.TicTacToe.BETTER;
+package no.wact.jenjon13.TicTacToe.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,19 +14,21 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import no.wact.jenjon13.TicTacToe.*;
 import no.wact.jenjon13.TicTacToe.activities.MainMenuActivity;
+import no.wact.jenjon13.TicTacToe.statics.IntentStrings;
+import no.wact.jenjon13.TicTacToe.statics.ResourceStrings;
 
-public class JonasFragment extends Fragment implements View.OnClickListener {
+public class GameFragment extends Fragment implements View.OnClickListener {
     private int gridSize = 9;
     private boolean crossTurn = true;
     private String aiDifficulty = null;
     private Board board = new Board(3, 3);
     private MiniMaxAI miniMaxAI = new MiniMaxAI(board, crossTurn ? Sign.NOUGHT : Sign.CROSS);
-    private View container;
+    private View containView;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View thisView = inflater.inflate(R.layout.boardfragment, container, false);
-        this.container = thisView;
+        containView = thisView;
         gridSize = getResources().getInteger(R.integer.gridSize);
         miniMaxAI.setSign(Sign.NOUGHT);
         int i = 1;
@@ -37,33 +40,28 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
 
         resetUi();
 
-        final TextView textView = (TextView) this.container.findViewById(R.id.gamePlayer1Text);
+        final SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ResourceStrings.sharedPrefs, getActivity().MODE_PRIVATE);
+        final TextView textView = (TextView) containView.findViewById(R.id.gamePlayer1Text);
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-        textView.setText(getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE)
-                .getString("player1name", getResources().getString(R.id.txtPlayer1Name)));
+        textView.setText(sharedPrefs.getString(ResourceStrings.player1name, getResources().getString(R.id.txtPlayer1Name)));
+        ((TextView) containView.findViewById(R.id.gamePlayer2Text))
+                .setText(sharedPrefs.getString(ResourceStrings.player2name, getResources().getString(R.id.txtPlayer2Name)));
 
-        ((TextView) this.container.findViewById(R.id.gamePlayer2Text)).setText(
-                getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE).getString("player2name",
-                        getResources().getString(R.id.txtPlayer1Name)));
+        final Bundle arguments = getArguments();
+        if (arguments != null) {
+            aiDifficulty = arguments.getString(IntentStrings.difficulty);
+        }
 
-
-//        final Bundle arguments = getArguments();
-//        Log.e("onCreateView", arguments.getString("difficulty"));
-//        aiDifficulty = arguments.getString("difficulty");
-//        final Bundle extras = getActivity().getIntent().getExtras(); // TODO: get extras from container activity, not from external activity
-//        if (extras != null) { // TODO somehow, magically, get the extra data originally passed by the intent, only.. not through an intent
-/*
-        aiDifficulty = arguments.getString(getResources().getString(R.string.selectaidifficulty_difficulty));
         if (aiDifficulty != null) {
             Log.v("onCreate", "Playing with " + aiDifficulty + " difficulty.");
-            ((TextView) container.findViewById(R.id.gamePlayer2Text)).setText("CPU"); // FIXME externalize to strings.xml
+            ((TextView) containView.findViewById(R.id.gamePlayer2Text)).setText(ResourceStrings.vsCPU);
         }
-*/
+
         return thisView;
     }
 
     private void setAllOnClickListeners() {
-        final ViewGroup parentLayout = (ViewGroup) container.findViewById(R.id.layoutGameScreen);
+        final ViewGroup parentLayout = (ViewGroup) containView.findViewById(R.id.layoutGameScreen);
         for (int i = 0; i < parentLayout.getChildCount(); i++) {
             parentLayout.getChildAt(i).setOnClickListener(this);
         }
@@ -75,12 +73,12 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
 
     private void resetUi() {
         setGameStatus(null);
-        container.findViewById(R.id.btnRematch).setVisibility(View.GONE);
+        containView.findViewById(R.id.btnRematch).setVisibility(View.GONE);
         crossTurn = true;
 
-        final TextView player1txt = (TextView) container.findViewById(R.id.gamePlayer1Text);
+        final TextView player1txt = (TextView) containView.findViewById(R.id.gamePlayer1Text);
         player1txt.setTypeface(Typeface.create(player1txt.getTypeface(), Typeface.BOLD));
-        final TextView player2txt = (TextView) container.findViewById(R.id.gamePlayer2Text);
+        final TextView player2txt = (TextView) containView.findViewById(R.id.gamePlayer2Text);
         player2txt.setTypeface(Typeface.create(player2txt.getTypeface(), Typeface.NORMAL));
 
         for (final Cell[] rows : board.cells) {
@@ -96,7 +94,7 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(final View v) {
         Log.v("onClick", "onClick called.");
-        final View foundView = container.findViewById(v.getId());
+        final View foundView = containView.findViewById(v.getId());
         if (foundView instanceof Button) {
             switch (v.getId()) {
                 case R.id.btnRematch:
@@ -124,10 +122,10 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
         pressedButton.setOnClickListener(null);
         crossTurn = !crossTurn;
 
-        final TextView lastPlayerTxt = (TextView) container.findViewById(crossTurn ? R.id.gamePlayer2Text : R.id.gamePlayer1Text);
+        final TextView lastPlayerTxt = (TextView) containView.findViewById(crossTurn ? R.id.gamePlayer2Text : R.id.gamePlayer1Text);
         lastPlayerTxt.setTypeface(Typeface.create(lastPlayerTxt.getTypeface(), Typeface.NORMAL));
 
-        final TextView curPlayerTxt = (TextView) container.findViewById(crossTurn ? R.id.gamePlayer1Text : R.id.gamePlayer2Text);
+        final TextView curPlayerTxt = (TextView) containView.findViewById(crossTurn ? R.id.gamePlayer1Text : R.id.gamePlayer2Text);
         curPlayerTxt.setTypeface(Typeface.create(lastPlayerTxt.getTypeface(), Typeface.BOLD));
 
         if (!checkForGameEndingEvents() && (aiDifficulty != null && !crossTurn)) {
@@ -141,7 +139,7 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
 
         if (tied || winner != Sign.EMPTY) {
             setGameStatus(winner);
-            container.findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
+            containView.findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
             board.disableAllButtons();
             return true;
         }
@@ -150,25 +148,25 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setGameStatus(Sign winner) {
-        final TextView txtDeclareWinner = (TextView) container.findViewById(R.id.txtDeclareWinner);
+        final TextView txtWinner = (TextView) containView.findViewById(R.id.txtDeclareWinner);
         if (winner == null) {
-            txtDeclareWinner.setText("");
+            txtWinner.setText("");
         } else if (winner == Sign.EMPTY) {
-            txtDeclareWinner.setText(R.string.game_tie);
+            txtWinner.setText(R.string.game_tie);
         } else {
-            txtDeclareWinner.setText(winner == Sign.CROSS ?
-                    getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE)
-                            .getString("player1name", getResources().getString(R.id.txtPlayer1Name)) :
-                    getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE)
-                            .getString("player2name", getResources().getString(R.id.txtPlayer2Name)));
-            txtDeclareWinner.append(" won!");
+            final SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ResourceStrings.sharedPrefs, getActivity().MODE_PRIVATE);
+            txtWinner.setText(winner == Sign.CROSS ? sharedPreferences
+                    .getString(ResourceStrings.player1name, getResources().getString(R.id.txtPlayer1Name)) :
+                    aiDifficulty == null ? sharedPreferences
+                            .getString(ResourceStrings.player2name, getResources().getString(R.id.txtPlayer2Name)) :
+                            ResourceStrings.vsCPU);
+            txtWinner.append(ResourceStrings.wonAppend);
         }
-
     }
 
     private void cpuMove() {
         switch (aiDifficulty) {
-            case "1": // getResources().getString(R.string.): FIXME
+            case ResourceStrings.aiDifficulty1:
                 while (true) {
                     final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * gridSize));
                     if (button.hasOnClickListeners()) {
@@ -177,14 +175,14 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
                     }
                 }
 
-            case "2": // FIXMESelectAIDifficultyActivity.DIFFICULTY_MEDIUM: FIXME
+            case ResourceStrings.aiDifficulty2:
                 final int[] move = miniMaxAI.move();
                 onClick(board.cells[move[0]][move[1]].button);
         }
     }
 
     private ImageButton getButtonByNumber(final int i) {
-        return (ImageButton) container.findViewById(getResources().getIdentifier("imageButton" + i, "id", getActivity().getPackageName()));
+        return (ImageButton) containView.findViewById(getResources().getIdentifier("imageButton" + i, "id", getActivity().getPackageName()));
     }
 
     private int getButtonNumberById(final int id) {
@@ -209,5 +207,4 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
 
         return true;
     }
-
 }
