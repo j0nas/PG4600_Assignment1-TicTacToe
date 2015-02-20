@@ -24,10 +24,8 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-
         final View thisView = inflater.inflate(R.layout.boardfragment, container, false);
         this.container = thisView;
-
         gridSize = getResources().getInteger(R.integer.gridSize);
         miniMaxAI.setSign(Sign.NOUGHT);
         int i = 1;
@@ -39,22 +37,22 @@ public class JonasFragment extends Fragment implements View.OnClickListener {
 
         resetUi();
 
-//        final TextView textView = (TextView) container.findViewById(R.id.gamePlayer1Text);
-//        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-//        textView.setText(getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE)
-//                .getString("player1name", getResources().getString(R.id.txtPlayer1Name)));
-//
-//        ((TextView) container.findViewById(R.id.gamePlayer2Text)).setText(
-//                getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE).getString("player2name",
-//                        getResources().getString(R.id.txtPlayer1Name)));
+        final TextView textView = (TextView) this.container.findViewById(R.id.gamePlayer1Text);
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        textView.setText(getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE)
+                .getString("player1name", getResources().getString(R.id.txtPlayer1Name)));
 
-        /*
-        final Bundle arguments = getArguments();
-        Log.e("onCreateView", String.valueOf(arguments == null));
-        aiDifficulty = arguments.getString("ananas");
+        ((TextView) this.container.findViewById(R.id.gamePlayer2Text)).setText(
+                getActivity().getSharedPreferences("TicTacToe_Preferences", getActivity().MODE_PRIVATE).getString("player2name",
+                        getResources().getString(R.id.txtPlayer1Name)));
+
+
+//        final Bundle arguments = getArguments();
+//        Log.e("onCreateView", arguments.getString("difficulty"));
+//        aiDifficulty = arguments.getString("difficulty");
 //        final Bundle extras = getActivity().getIntent().getExtras(); // TODO: get extras from container activity, not from external activity
 //        if (extras != null) { // TODO somehow, magically, get the extra data originally passed by the intent, only.. not through an intent
-
+/*
         aiDifficulty = arguments.getString(getResources().getString(R.string.selectaidifficulty_difficulty));
         if (aiDifficulty != null) {
             Log.v("onCreate", "Playing with " + aiDifficulty + " difficulty.");
