@@ -22,7 +22,8 @@ public class GetPlayerNamesActivity extends Activity implements View.OnClickList
                 savedPlayerNames = {R.string.getplayernames_player1name, R.string.getplayernames_player2name};
 
         final Bundle extras = getIntent().getExtras();
-        if (extras != null && (difficultyLevel = extras.getString(getResources().getString(R.string.selectaidifficulty_difficulty))) != null) {
+        if (extras != null && (difficultyLevel = extras.getString(getResources().getString(R.string
+                .selectaidifficulty_difficulty))) != null) {
             findViewById(playerFields[1]).setVisibility(View.INVISIBLE);
         }
 
@@ -32,7 +33,6 @@ public class GetPlayerNamesActivity extends Activity implements View.OnClickList
                             .getString("player" + (i + 1) + "name", getResources().getString(savedPlayerNames[i])));
         }
 
-        findViewById(R.id.btnEnterPlayerNames_Back).setOnClickListener(this);
         findViewById(R.id.btnEnterPlayerNames_Start).setOnClickListener(this);
     }
 
@@ -40,14 +40,13 @@ public class GetPlayerNamesActivity extends Activity implements View.OnClickList
     public void onClick(final View v) {
         Log.v("onClick", "onClick called");
         switch (v.getId()) {
-            case R.id.btnEnterPlayerNames_Back:
-                startActivity(new Intent(GetPlayerNamesActivity.this, MainMenuActivity.class));
-                return;
             case R.id.btnEnterPlayerNames_Start:
                 getSharedPreferences(ResourceStrings.sharedPrefs, MODE_PRIVATE)
                         .edit()
-                        .putString(ResourceStrings.player1name, ((TextView) findViewById(R.id.txtPlayer1Name)).getText().toString())
-                        .putString(ResourceStrings.player2name, ((TextView) findViewById(R.id.txtPlayer2Name)).getText().toString())
+                        .putString(ResourceStrings.player1name, ((TextView) findViewById(R.id.txtPlayer1Name)).getText()
+                                .toString())
+                        .putString(ResourceStrings.player2name, ((TextView) findViewById(R.id.txtPlayer2Name)).getText()
+                                .toString())
                         .commit();
 
                 final Intent intent = new Intent(GetPlayerNamesActivity.this, GameScreenActivity.class);

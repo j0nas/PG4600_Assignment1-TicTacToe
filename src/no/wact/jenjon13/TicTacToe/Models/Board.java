@@ -1,10 +1,10 @@
-package no.wact.jenjon13.TicTacToe;
+package no.wact.jenjon13.TicTacToe.models;
 
 public class Board {
 
     public Cell[][] cells;
 
-    public Board(final int gridWidth, final int gridHeight) {
+    public Board(final int gridWidth, int gridHeight) {
         cells = new Cell[gridWidth][gridHeight];
 
         for (int i = 0; i < cells.length; i++) {

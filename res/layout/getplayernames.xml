@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/getplayernames_playernametxt"
-            android:id="@+id/txtEnterPlayerNames" android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="75dp"/>
+        android:id="@+id/txtEnterPlayerNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="@string/getplayernames_playernametxt"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text="@string/getplayernames_player1name"
-            android:ems="10"
-            android:id="@+id/txtPlayer1Name"
-            android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+        android:id="@+id/txtPlayer1Name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:inputType="textPersonName"
+        android:text="@string/getplayernames_player1name" />
+
     <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text="@string/getplayernames_player2name"
-            android:ems="10"
-            android:id="@+id/txtPlayer2Name"
-            android:layout_below="@+id/txtPlayer1Name" android:layout_alignStart="@+id/txtPlayer1Name"/>
+        android:id="@+id/txtPlayer2Name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtPlayer1Name"
+        android:layout_below="@+id/txtPlayer1Name"
+        android:inputType="textPersonName"
+        android:text="@string/getplayernames_player2name" />
+
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start"
-            android:id="@+id/btnEnterPlayerNames_Start" android:layout_below="@+id/txtPlayer2Name"
-            android:layout_alignStart="@id/txtPlayer1Name" android:layout_alignEnd="@+id/txtPlayer2Name"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:id="@+id/btnEnterPlayerNames_Back" android:layout_below="@+id/btnEnterPlayerNames_Start"
-            android:layout_alignStart="@+id/btnEnterPlayerNames_Start"
-            android:layout_alignEnd="@+id/btnEnterPlayerNames_Start"/>
+        android:id="@+id/btnEnterPlayerNames_Start"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/backbtnFragment"
+        android:layout_alignParentStart="true"
+        android:text="@string/getplayernames_start" />
+
+    <fragment
+        android:id="@+id/backbtnFragment"
+        android:name="no.wact.jenjon13.TicTacToe.fragments.BackBtnFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/backbtnfragment" />
 </RelativeLayout>

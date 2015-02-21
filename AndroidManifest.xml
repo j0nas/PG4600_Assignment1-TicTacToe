@@ -19,6 +19,6 @@
         <activity android:name=".activities.GetPlayerNamesActivity" />
         <activity android:name=".activities.AboutActivity" />
         <activity android:name=".activities.GameScreenActivity" />
-        <activity android:name=".activities.GamehistoryActivity" />
+        <activity android:name=".activities.GameHistoryActivity" />
     </application>
 </manifest>

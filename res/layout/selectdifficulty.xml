@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/layoutSelectDifficulty"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" android:gravity="center_vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutSelectDifficulty"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/selectaidifficulty_selectdifficutly"
-            android:id="@+id/txtSelectDifficulty" android:layout_gravity="center_horizontal"/>
+        android:id="@+id/txtSelectDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:text="@string/selectaidifficulty_selectdifficutly"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/selectaidifficulty_easy"
-            android:id="@+id/btnDifficultyEasy" android:layout_gravity="center_horizontal"/>
+        android:id="@+id/btnDifficultyEasy"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnDifficultyMedium"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/selectaidifficulty_easy" />
+
     <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/selectaidifficulty_medium"
-            android:id="@+id/btnDifficultyMedium" android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+        android:id="@+id/btnDifficultyMedium"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/selectaidifficulty_medium" />
+
+    <fragment
+        android:id="@+id/backbtnFragment"
+        android:name="no.wact.jenjon13.TicTacToe.fragments.BackBtnFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/backbtnfragment" />
+</RelativeLayout>

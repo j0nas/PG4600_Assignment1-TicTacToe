@@ -1,4 +1,8 @@
-package no.wact.jenjon13.TicTacToe;
+package no.wact.jenjon13.TicTacToe.abstracts;
+
+import no.wact.jenjon13.TicTacToe.models.Board;
+import no.wact.jenjon13.TicTacToe.models.Cell;
+import no.wact.jenjon13.TicTacToe.models.Sign;
 
 /**
  * Abstract superclass for all AI players with different strategies.

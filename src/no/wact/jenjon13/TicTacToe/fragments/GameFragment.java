@@ -1,7 +1,6 @@
 package no.wact.jenjon13.TicTacToe.fragments;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,17 +11,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import no.wact.jenjon13.TicTacToe.*;
-import no.wact.jenjon13.TicTacToe.activities.GamehistoryActivity;
-import no.wact.jenjon13.TicTacToe.activities.MainMenuActivity;
+import no.wact.jenjon13.TicTacToe.R;
+import no.wact.jenjon13.TicTacToe.activities.GameHistoryActivity;
+import no.wact.jenjon13.TicTacToe.ai.MiniMaxAI;
+import no.wact.jenjon13.TicTacToe.configs.Config;
+import no.wact.jenjon13.TicTacToe.models.Board;
+import no.wact.jenjon13.TicTacToe.models.Cell;
+import no.wact.jenjon13.TicTacToe.models.Sign;
 import no.wact.jenjon13.TicTacToe.statics.IntentStrings;
 import no.wact.jenjon13.TicTacToe.statics.ResourceStrings;
+import no.wact.jenjon13.TicTacToe.utilities.ImgUtils;
 
 public class GameFragment extends Fragment implements View.OnClickListener {
-    private int gridSize = 9;
     private boolean crossTurn = true;
     private String aiDifficulty = null;
-    private Board board = new Board(3, 3);
+
+    private Board board = new Board(Config.GRID_WIDTH, Config.GRID_HEIGHT);
     private MiniMaxAI miniMaxAI = new MiniMaxAI(board, crossTurn ? Sign.NOUGHT : Sign.CROSS);
     private View containView;
 
@@ -34,7 +38,6 @@ public class GameFragment extends Fragment implements View.OnClickListener {
             savedInstanceState) {
         final View thisView = inflater.inflate(R.layout.boardfragment, container, false);
         containView = thisView;
-        gridSize = getResources().getInteger(R.integer.gridSize);
 
         int i = 1;
         for (final Cell[] rows : board.cells) {
@@ -108,11 +111,11 @@ public class GameFragment extends Fragment implements View.OnClickListener {
                     Log.v("onClick", "Clicked btnRematch");
                     resetUi();
                     return;
-                case R.id.btnMainMenu:
-                    Log.v("onClick", "Clicked btnMainMenu");
-                    resetUi();
-                    startActivity(new Intent(getActivity(), MainMenuActivity.class));
-                    return;
+//                case R.id.btnBoard_back:
+//                    Log.v("onClick", "Clicked btnMainMenu");
+//                    resetUi();
+//                    startActivity(new Intent(getActivity(), MainMenuActivity.class));
+//                    return; TODO
             }
         }
 
@@ -122,7 +125,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         }
 
         final ImageButton pressedButton = (ImageButton) foundView;
-        pressedButton.setImageBitmap(Utilities.decodeSampledBitmapFromResource(getResources(),
+        pressedButton.setImageBitmap(ImgUtils.decodeSampledBitmapFromResource(getResources(),
                 crossTurn ? R.drawable.cross : R.drawable.circle, 15, 15));
         board.getCellByNumber(getButtonNumberById(v.getId()) - 1).content = (crossTurn ? Sign.CROSS : Sign.NOUGHT);
         pressedButton.setOnClickListener(null);
@@ -155,7 +158,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
                                     .getSharedPreferences(ResourceStrings.sharedPrefs, getActivity().MODE_PRIVATE)
                                     .getString(playerNameId, "N/A");
 
-            GamehistoryActivity.addNewScore(playerName,
+            GameHistoryActivity.addNewScore(playerName,
                     (int) (System.currentTimeMillis() - roundTime), aiDifficulty);
 
             setGameStatus(winner);
@@ -190,7 +193,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         switch (aiDifficulty) {
             case ResourceStrings.aiDifficulty1:
                 while (true) {
-                    final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * gridSize));
+                    final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * (Config.GRID_SIZE)));
                     if (button.hasOnClickListeners()) {
                         onClick(button);
                         return;
@@ -209,7 +212,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     }
 
     private int getButtonNumberById(final int id) {
-        for (int i = 1; i < gridSize + 1; i++) {
+        for (int i = 1; i < ((Config.GRID_SIZE) + 1); i++) {
             if (id == getResources().getIdentifier("imageButton" + i, "id", getActivity().getPackageName())) {
                 return i;
             }

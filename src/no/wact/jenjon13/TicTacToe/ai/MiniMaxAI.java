@@ -1,4 +1,8 @@
-package no.wact.jenjon13.TicTacToe;
+package no.wact.jenjon13.TicTacToe.ai;
+
+import no.wact.jenjon13.TicTacToe.abstracts.AIPlayer;
+import no.wact.jenjon13.TicTacToe.models.Board;
+import no.wact.jenjon13.TicTacToe.models.Sign;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +70,9 @@ public class MiniMaxAI extends AIPlayer {
                 // undo move
                 cells[move[0]][move[1]].content = Sign.EMPTY;
                 // cut-off
-                if (alpha >= beta) break;
+                if (alpha >= beta) {
+                    break;
+                }
             }
             return new int[]{(player == mySign) ? alpha : beta, bestRow, bestCol};
         }

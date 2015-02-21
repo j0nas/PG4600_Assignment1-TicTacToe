@@ -12,12 +12,14 @@
         respective marks in a horizontal, vertical, or diagonal row wins the game.\"
     </string>
 
+    <string name="btnback">Back</string>
+
     <string name="start_twoplayer_game">Start Two-player Game</string>
     <string name="start_oneplayer_game">Start One-player Game (vs. AI)</string>
     <string name="mainmenu">Main Menu</string>
     <string name="mainmenu_gametitle">TicTacToe</string>
     <string name="mainmenu_abouthelp">About/Help</string>
-    <string name="mainmenu_highscores">Highscores</string>
+    <string name="mainmenu_highscores">Game Log</string>
 
     <string name="selectaidifficulty_easy">Easy</string>
     <string name="selectaidifficulty_medium">Medium</string>
@@ -31,6 +33,6 @@
     <string name="getplayernames_isVsCPU">isVsCPU</string>
     <string name="about_wikiquotesourcetxt">- Wikipedia, Tic-tac-toe</string>
     <string name="about_authortxt">by Jonas Jensen\njenjon13@student.westerdals.no</string>
-    <string name="about_backbtn">Back</string>
-    <string name="highscores_back">Back</string>
+
+    <string name="getplayernames_start">Start</string>
 </resources>

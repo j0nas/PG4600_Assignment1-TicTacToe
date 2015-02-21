@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutGameScreen"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -44,8 +44,9 @@
 
     <GridLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
         android:columnCount="3"
         android:rowCount="3">
 
@@ -149,25 +150,25 @@
             android:minWidth="200px" />
     </GridLayout>
 
-    <Button
-        android:id="@+id/btnMainMenu"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/mainmenu" />
-
-    <Button
-        android:id="@+id/btnRematch"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/game_rematch"
-        android:visibility="invisible" />
-
     <TextView
         android:id="@+id/txtDeclareWinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/btnRematch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/game_rematch"
+        android:visibility="invisible" />
+
+    <fragment
+        android:id="@+id/backbtnFragment"
+        android:name="no.wact.jenjon13.TicTacToe.fragments.BackBtnFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/backbtnfragment" />
 </LinearLayout>
 

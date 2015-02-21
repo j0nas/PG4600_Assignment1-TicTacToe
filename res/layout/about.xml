@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:padding="10dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/app_name"
-            android:id="@+id/about_txtTitle"
-            android:layout_marginTop="75dp" android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"/>
+        android:id="@+id/about_txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/about_authortxt"
-            android:id="@+id/about_txtAuthor" android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:linksClickable="false" android:gravity="center_horizontal"/>
+        android:id="@+id/about_txtAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/backbtnFragment"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:linksClickable="false"
+        android:text="@string/about_authortxt"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/about_wikiquotetxt"
-            android:id="@+id/about_txtWikiquote"
-            android:textStyle="italic" android:layout_below="@+id/about_txtTitle"
-            android:layout_marginTop="37dp"
-            android:layout_alignParentEnd="true" android:layout_alignParentStart="true"/>
+        android:id="@+id/about_txtWikiquote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/about_txtTitle"
+        android:layout_marginTop="37dp"
+        android:padding="10dp"
+        android:text="@string/about_wikiquotetxt"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="italic" />
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/about_wikiquotesourcetxt"
-            android:id="@+id/about_txtWikiquoteSource"
-            android:layout_below="@+id/about_txtWikiquote" android:layout_alignStart="@+id/about_txtWikiquote"/>
-    <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/about_backbtn"
-            android:id="@+id/about_back" android:layout_above="@+id/about_txtAuthor"
-            android:layout_centerHorizontal="true"/>
+        android:id="@+id/about_txtWikiquoteSource"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/about_txtWikiquote"
+        android:layout_below="@+id/about_txtWikiquote"
+        android:padding="10dp"
+        android:text="@string/about_wikiquotesourcetxt"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <fragment
+        android:id="@+id/backbtnFragment"
+        android:name="no.wact.jenjon13.TicTacToe.fragments.BackBtnFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/backbtnfragment" />
 </RelativeLayout>
