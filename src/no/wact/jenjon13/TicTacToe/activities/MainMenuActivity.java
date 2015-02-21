@@ -34,7 +34,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(MainMenuActivity.this, AboutActivity.class));
                 break;
             case R.id.btnHighScores:
-                startActivity(new Intent(MainMenuActivity.this, HighscoreActivity.class));
+                startActivity(new Intent(MainMenuActivity.this, GamehistoryActivity.class));
+                break;
             default:
                 Log.e("onClick", "Unhandled onClick on view with id: " + v.getId());
         }

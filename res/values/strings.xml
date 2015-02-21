@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TicTacToe</string>
-    <string name="header_value">TicTacToe</string>
 
-    <string name="game_cross_won">X won!</string>
-    <string name="game_circle_won">O won!</string>
     <string name="game_tie">Tie!</string>
     <string name="game_rematch">Rematch</string>
     <string name="game_player1">Player 1</string>

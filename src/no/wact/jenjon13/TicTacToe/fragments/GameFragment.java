@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import no.wact.jenjon13.TicTacToe.*;
+import no.wact.jenjon13.TicTacToe.activities.GamehistoryActivity;
 import no.wact.jenjon13.TicTacToe.activities.MainMenuActivity;
 import no.wact.jenjon13.TicTacToe.statics.IntentStrings;
 import no.wact.jenjon13.TicTacToe.statics.ResourceStrings;
@@ -25,12 +26,16 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     private MiniMaxAI miniMaxAI = new MiniMaxAI(board, crossTurn ? Sign.NOUGHT : Sign.CROSS);
     private View containView;
 
+    private long roundTime;
+
+
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle
+            savedInstanceState) {
         final View thisView = inflater.inflate(R.layout.boardfragment, container, false);
         containView = thisView;
         gridSize = getResources().getInteger(R.integer.gridSize);
-        miniMaxAI.setSign(Sign.NOUGHT);
+
         int i = 1;
         for (final Cell[] rows : board.cells) {
             for (Cell cell : rows) {
@@ -40,12 +45,14 @@ public class GameFragment extends Fragment implements View.OnClickListener {
 
         resetUi();
 
-        final SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ResourceStrings.sharedPrefs, getActivity().MODE_PRIVATE);
+        final SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ResourceStrings.sharedPrefs,
+                getActivity().MODE_PRIVATE);
         final TextView textView = (TextView) containView.findViewById(R.id.gamePlayer1Text);
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-        textView.setText(sharedPrefs.getString(ResourceStrings.player1name, getResources().getString(R.id.txtPlayer1Name)));
-        ((TextView) containView.findViewById(R.id.gamePlayer2Text))
-                .setText(sharedPrefs.getString(ResourceStrings.player2name, getResources().getString(R.id.txtPlayer2Name)));
+        textView.setText(sharedPrefs.getString(ResourceStrings.player1name, getResources().getString(R.id
+                .txtPlayer1Name)));
+        ((TextView) containView.findViewById(R.id.gamePlayer2Text)).setText(sharedPrefs.getString(ResourceStrings
+                .player2name, getResources().getString(R.id.txtPlayer2Name)));
 
         final Bundle arguments = getArguments();
         if (arguments != null) {
@@ -89,11 +96,11 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         }
 
         setAllOnClickListeners();
+        roundTime = System.currentTimeMillis();
     }
 
     @Override
     public void onClick(final View v) {
-        Log.v("onClick", "onClick called.");
         final View foundView = containView.findViewById(v.getId());
         if (foundView instanceof Button) {
             switch (v.getId()) {
@@ -117,15 +124,16 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         final ImageButton pressedButton = (ImageButton) foundView;
         pressedButton.setImageBitmap(Utilities.decodeSampledBitmapFromResource(getResources(),
                 crossTurn ? R.drawable.cross : R.drawable.circle, 15, 15));
-
         board.getCellByNumber(getButtonNumberById(v.getId()) - 1).content = (crossTurn ? Sign.CROSS : Sign.NOUGHT);
         pressedButton.setOnClickListener(null);
         crossTurn = !crossTurn;
 
-        final TextView lastPlayerTxt = (TextView) containView.findViewById(crossTurn ? R.id.gamePlayer2Text : R.id.gamePlayer1Text);
+        final TextView lastPlayerTxt =
+                (TextView) containView.findViewById(crossTurn ? R.id.gamePlayer2Text : R.id.gamePlayer1Text);
         lastPlayerTxt.setTypeface(Typeface.create(lastPlayerTxt.getTypeface(), Typeface.NORMAL));
 
-        final TextView curPlayerTxt = (TextView) containView.findViewById(crossTurn ? R.id.gamePlayer1Text : R.id.gamePlayer2Text);
+        final TextView curPlayerTxt =
+                (TextView) containView.findViewById(crossTurn ? R.id.gamePlayer1Text : R.id.gamePlayer2Text);
         curPlayerTxt.setTypeface(Typeface.create(lastPlayerTxt.getTypeface(), Typeface.BOLD));
 
         if (!checkForGameEndingEvents() && (aiDifficulty != null && !crossTurn)) {
@@ -134,10 +142,22 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     }
 
     private boolean checkForGameEndingEvents() {
-        final Sign winner = miniMaxAI.hasWon(Sign.CROSS) ? Sign.CROSS : (miniMaxAI.hasWon(Sign.NOUGHT) ? Sign.NOUGHT : Sign.EMPTY);
+        final Sign winner = miniMaxAI.hasWon(Sign.CROSS) ?
+                Sign.CROSS : (miniMaxAI.hasWon(Sign.NOUGHT) ? Sign.NOUGHT : Sign.EMPTY);
         final boolean tied = (winner == Sign.EMPTY) && checkTie();
 
         if (tied || winner != Sign.EMPTY) {
+            final String playerNameId =
+                    (winner == Sign.CROSS) ? ResourceStrings.player1name : ResourceStrings.player2name;
+            final String playerName = tied ? "Tie" :
+                    winner == Sign.NOUGHT && aiDifficulty != null ? "CPU" :
+                            getActivity()
+                                    .getSharedPreferences(ResourceStrings.sharedPrefs, getActivity().MODE_PRIVATE)
+                                    .getString(playerNameId, "N/A");
+
+            GamehistoryActivity.addNewScore(playerName,
+                    (int) (System.currentTimeMillis() - roundTime), aiDifficulty);
+
             setGameStatus(winner);
             containView.findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
             board.disableAllButtons();
@@ -154,12 +174,14 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         } else if (winner == Sign.EMPTY) {
             txtWinner.setText(R.string.game_tie);
         } else {
-            final SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ResourceStrings.sharedPrefs, getActivity().MODE_PRIVATE);
-            txtWinner.setText(winner == Sign.CROSS ? sharedPreferences
-                    .getString(ResourceStrings.player1name, getResources().getString(R.id.txtPlayer1Name)) :
-                    aiDifficulty == null ? sharedPreferences
-                            .getString(ResourceStrings.player2name, getResources().getString(R.id.txtPlayer2Name)) :
-                            ResourceStrings.vsCPU);
+            final SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ResourceStrings
+                    .sharedPrefs, getActivity().MODE_PRIVATE);
+
+            txtWinner.setText(winner == Sign.CROSS ? sharedPreferences.getString(ResourceStrings.player1name,
+                    getResources().getString(R.id.txtPlayer1Name)) :
+                    aiDifficulty == null ?
+                            sharedPreferences.getString(ResourceStrings.player2name,
+                                    getResources().getString(R.id.txtPlayer2Name)) : ResourceStrings.vsCPU);
             txtWinner.append(ResourceStrings.wonAppend);
         }
     }
@@ -182,7 +204,8 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     }
 
     private ImageButton getButtonByNumber(final int i) {
-        return (ImageButton) containView.findViewById(getResources().getIdentifier("imageButton" + i, "id", getActivity().getPackageName()));
+        return (ImageButton) containView.findViewById(getResources().getIdentifier("imageButton" + i, "id",
+                getActivity().getPackageName()));
     }
 
     private int getButtonNumberById(final int id) {
