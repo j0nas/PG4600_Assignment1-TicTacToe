@@ -18,14 +18,19 @@ public class MiniMaxAI extends AIPlayer {
     };
 
     /**
-     * Constructor with the given game board
+     * Constructor for the class.
+     *
+     * @param board The Board which the AI will refer to.
+     * @param sign  The Sign which the AI will play.
      */
     public MiniMaxAI(Board board, Sign sign) {
         super(board, sign);
     }
 
     /**
-     * Get next best move for computer. Return int[2] of {row, col}
+     * Finds the best available move for the AI.
+     *
+     * @return Returns int[2] of {row, column} for the best move
      */
     @Override
     public int[] move() {
@@ -38,28 +43,24 @@ public class MiniMaxAI extends AIPlayer {
      * Return int[3] of {score, row, col}
      */
     private int[] minimax(int depth, Sign player, int alpha, int beta) {
-        // Generate possible next moves in a list of int[2] of {row, col}.
         List<int[]> nextMoves = generateMoves();
 
-        // mySign is maximizing; while oppSign is minimizing
         int score, bestRow = -1, bestCol = -1;
 
         if (nextMoves.isEmpty() || depth == 0) {
-            // Gameover or depth reached, evaluate score
             score = evaluate();
             return new int[]{score, bestRow, bestCol};
         } else {
             for (int[] move : nextMoves) {
-                // try this move for the current "player"
                 cells[move[0]][move[1]].content = player;
-                if (player == mySign) {  // mySign (computer) is maximizing player
+                if (player == mySign) {
                     score = minimax(depth - 1, oppSign, alpha, beta)[0];
                     if (score > alpha) {
                         alpha = score;
                         bestRow = move[0];
                         bestCol = move[1];
                     }
-                } else {  // oppSign is minimizing player
+                } else {
                     score = minimax(depth - 1, mySign, alpha, beta)[0];
                     if (score < beta) {
                         beta = score;
@@ -67,30 +68,28 @@ public class MiniMaxAI extends AIPlayer {
                         bestCol = move[1];
                     }
                 }
-                // undo move
+
                 cells[move[0]][move[1]].content = Sign.EMPTY;
-                // cut-off
                 if (alpha >= beta) {
                     break;
                 }
             }
+
             return new int[]{(player == mySign) ? alpha : beta, bestRow, bestCol};
         }
     }
 
     /**
      * Find all valid next moves.
-     * Return List of moves in int[2] of {row, col} or empty list if gameover
+     *
+     * @return List of moves in int[2] of {row, col} or empty list if gameover
      */
     private List<int[]> generateMoves() {
-        List<int[]> nextMoves = new ArrayList<int[]>(); // allocate List
-
-        // If gameover, i.e., no next move
+        List<int[]> nextMoves = new ArrayList<int[]>();
         if (hasWon(mySign) || hasWon(oppSign)) {
-            return nextMoves;   // return empty list
+            return nextMoves;
         }
 
-        // Search for empty cells and add to the List
         for (int row = 0; row < ROWS; ++row) {
             for (int col = 0; col < COLS; ++col) {
                 if (cells[row][col].content == Sign.EMPTY) {
@@ -107,12 +106,10 @@ public class MiniMaxAI extends AIPlayer {
      *
      * @return +100, +10, +1 for EACH 3-, 2-, 1-in-a-line for computer.
      * -100, -10, -1 for EACH 3-, 2-, 1-in-a-line for opponent.
-     * 0 otherwise
+     * 0 otherwise.
      */
     private int evaluate() {
-        int score = 0;
-        // Evaluate score for each of the 8 lines (3 rows, 3 columns, 2 diagonals)
-        score += evaluateLine(0, 0, 0, 1, 0, 2);  // row 0
+        int score = evaluateLine(0, 0, 0, 1, 0, 2);  // row 0
         score += evaluateLine(1, 0, 1, 1, 1, 2);  // row 1
         score += evaluateLine(2, 0, 2, 1, 2, 2);  // row 2
         score += evaluateLine(0, 0, 1, 0, 2, 0);  // col 0
@@ -133,61 +130,61 @@ public class MiniMaxAI extends AIPlayer {
     private int evaluateLine(int row1, int col1, int row2, int col2, int row3, int col3) {
         int score = 0;
 
-        // First cell
         if (cells[row1][col1].content == mySign) {
             score = 1;
         } else if (cells[row1][col1].content == oppSign) {
             score = -1;
         }
 
-        // Second cell
         if (cells[row2][col2].content == mySign) {
-            if (score == 1) {   // cell1 is mySign
+            if (score == 1) {
                 score = 10;
-            } else if (score == -1) {  // cell1 is oppSign
+            } else if (score == -1) {
                 return 0;
-            } else {  // cell1 is empty
+            } else {
                 score = 1;
             }
         } else if (cells[row2][col2].content == oppSign) {
-            if (score == -1) { // cell1 is oppSign
+            if (score == -1) {
                 score = -10;
-            } else if (score == 1) { // cell1 is mySign
+            } else if (score == 1) {
                 return 0;
-            } else {  // cell1 is empty
+            } else {
                 score = -1;
             }
         }
 
-        // Third cell
         if (cells[row3][col3].content == mySign) {
-            if (score > 0) {  // cell1 and/or cell2 is mySign
+            if (score > 0) {
                 score *= 10;
-            } else if (score < 0) {  // cell1 and/or cell2 is oppSign
+            } else if (score < 0) {
                 return 0;
-            } else {  // cell1 and cell2 are empty
+            } else {
                 score = 1;
             }
         } else if (cells[row3][col3].content == oppSign) {
-            if (score < 0) {  // cell1 and/or cell2 is oppSign
+            if (score < 0) {
                 score *= 10;
-            } else if (score > 1) {  // cell1 and/or cell2 is mySign
+            } else if (score > 1) {
                 return 0;
-            } else {  // cell1 and cell2 are empty
+            } else {
                 score = -1;
             }
         }
+
         return score;
     }
 
     /**
-     * Returns true if thePlayer wins
+     * Checks if the given Sign has won.
+     * @param sign The Sign to check win for.
+     * @return True if a win was detected for the Sign, false otherwise.
      */
-    public boolean hasWon(Sign thePlayer) {
-        int pattern = 0b000000000;  // 9-bit pattern for the 9 cells
+    public boolean hasWon(Sign sign) {
+        int pattern = 0b000000000;
         for (int row = 0; row < ROWS; ++row) {
             for (int col = 0; col < COLS; ++col) {
-                if (cells[row][col].content == thePlayer) {
+                if (cells[row][col].content == sign) {
                     pattern |= (1 << (row * COLS + col));
                 }
             }

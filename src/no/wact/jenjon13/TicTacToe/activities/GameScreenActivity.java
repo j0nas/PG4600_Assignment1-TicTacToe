@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import no.wact.jenjon13.TicTacToe.R;
 import no.wact.jenjon13.TicTacToe.fragments.GameFragment;
-import no.wact.jenjon13.TicTacToe.statics.IntentStrings;
 
 public class GameScreenActivity extends Activity {
     @Override
@@ -18,9 +17,10 @@ public class GameScreenActivity extends Activity {
 
             final Bundle extras = getIntent().getExtras();
             final String difficulty;
-            if (extras != null && (difficulty = extras.getString(IntentStrings.difficulty)) != null) {
+            if (extras != null && (difficulty = extras.getString(getResources().getString(R.string.difficulty))) !=
+                    null) {
                 final Bundle bundle = new Bundle();
-                bundle.putString(IntentStrings.difficulty, difficulty);
+                bundle.putString(getResources().getString(R.string.difficulty), difficulty);
                 gameFragment.setArguments(bundle);
             }
 

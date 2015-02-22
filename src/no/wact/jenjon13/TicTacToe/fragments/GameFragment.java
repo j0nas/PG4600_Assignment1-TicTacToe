@@ -18,8 +18,6 @@ import no.wact.jenjon13.TicTacToe.configs.Config;
 import no.wact.jenjon13.TicTacToe.models.Board;
 import no.wact.jenjon13.TicTacToe.models.Cell;
 import no.wact.jenjon13.TicTacToe.models.Sign;
-import no.wact.jenjon13.TicTacToe.statics.IntentStrings;
-import no.wact.jenjon13.TicTacToe.statics.ResourceStrings;
 import no.wact.jenjon13.TicTacToe.utilities.ImgUtils;
 
 public class GameFragment extends Fragment implements View.OnClickListener {
@@ -48,23 +46,29 @@ public class GameFragment extends Fragment implements View.OnClickListener {
 
         resetUi();
 
-        final SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ResourceStrings.sharedPrefs,
-                getActivity().MODE_PRIVATE);
+        final SharedPreferences sharedPrefs =
+                getActivity()
+                        .getSharedPreferences(getResources()
+                                .getString(R.string.sharedPrefs), getActivity().MODE_PRIVATE);
+
         final TextView textView = (TextView) containView.findViewById(R.id.gamePlayer1Text);
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-        textView.setText(sharedPrefs.getString(ResourceStrings.player1name, getResources().getString(R.id
-                .txtPlayer1Name)));
-        ((TextView) containView.findViewById(R.id.gamePlayer2Text)).setText(sharedPrefs.getString(ResourceStrings
-                .player2name, getResources().getString(R.id.txtPlayer2Name)));
+        textView.setText(sharedPrefs.getString(getResources().getString(R.string.player1name),
+                getResources().getString(R.string.game_player1)));
+
+        ((TextView) containView.findViewById(R.id.gamePlayer2Text))
+                .setText(sharedPrefs.getString(getResources().getString(R.string.player2name),
+                        getResources().getString(R.string.game_player2)));
 
         final Bundle arguments = getArguments();
         if (arguments != null) {
-            aiDifficulty = arguments.getString(IntentStrings.difficulty);
+            aiDifficulty = arguments.getString(getResources().getString(R.string.difficulty));
         }
 
         if (aiDifficulty != null) {
             Log.v("onCreate", "Playing with " + aiDifficulty + " difficulty.");
-            ((TextView) containView.findViewById(R.id.gamePlayer2Text)).setText(ResourceStrings.vsCPU);
+            ((TextView) containView.findViewById(R.id.gamePlayer2Text))
+                    .setText(getResources().getString(R.string.vsCPU));
         }
 
         return thisView;
@@ -150,12 +154,13 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         final boolean tied = (winner == Sign.EMPTY) && checkTie();
 
         if (tied || winner != Sign.EMPTY) {
-            final String playerNameId =
-                    (winner == Sign.CROSS) ? ResourceStrings.player1name : ResourceStrings.player2name;
+            final String playerNameId = getResources().getString(
+                    (winner == Sign.CROSS) ? R.string.player1name : R.string.player2name);
             final String playerName = tied ? "Tie" :
                     winner == Sign.NOUGHT && aiDifficulty != null ? "CPU" :
                             getActivity()
-                                    .getSharedPreferences(ResourceStrings.sharedPrefs, getActivity().MODE_PRIVATE)
+                                    .getSharedPreferences(getResources().getString(R.string.sharedPrefs),
+                                            getActivity().MODE_PRIVATE)
                                     .getString(playerNameId, "N/A");
 
             GameHistoryActivity.addNewScore(playerName,
@@ -177,32 +182,37 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         } else if (winner == Sign.EMPTY) {
             txtWinner.setText(R.string.game_tie);
         } else {
-            final SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ResourceStrings
-                    .sharedPrefs, getActivity().MODE_PRIVATE);
+            final SharedPreferences sharedPreferences = getActivity()
+                    .getSharedPreferences(getResources().getString(R.string.sharedPrefs), getActivity().MODE_PRIVATE);
 
-            txtWinner.setText(winner == Sign.CROSS ? sharedPreferences.getString(ResourceStrings.player1name,
-                    getResources().getString(R.id.txtPlayer1Name)) :
+            txtWinner.setText(winner == Sign.CROSS ? sharedPreferences.getString(getResources().getString(R.string
+                    .player1name), getResources()
+                    .getString(R.id.txtPlayer1Name)) :
                     aiDifficulty == null ?
-                            sharedPreferences.getString(ResourceStrings.player2name,
-                                    getResources().getString(R.id.txtPlayer2Name)) : ResourceStrings.vsCPU);
-            txtWinner.append(ResourceStrings.wonAppend);
+                            sharedPreferences.getString(getResources().getString(R.string.player2name),
+                                    getResources().getString(R.id.txtPlayer2Name)) : getString(R.string.vsCPU));
+            txtWinner.append(getResources().getString(R.string.wonAppend));
         }
     }
 
     private void cpuMove() {
-        switch (aiDifficulty) {
-            case ResourceStrings.aiDifficulty1:
-                while (true) {
-                    final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * (Config.GRID_SIZE)));
-                    if (button.hasOnClickListeners()) {
-                        onClick(button);
-                        return;
-                    }
-                }
+        if (aiDifficulty == null) {
+            return;
+        }
 
-            case ResourceStrings.aiDifficulty2:
-                final int[] move = miniMaxAI.move();
-                onClick(board.cells[move[0]][move[1]].button);
+        if (aiDifficulty.equals(getResources().getString(R.string.aiDifficulty1))) {
+            while (true) {
+                final ImageButton button = getButtonByNumber(1 + (int) (Math.random() * (Config.GRID_SIZE)));
+                if (button.hasOnClickListeners()) {
+                    onClick(button);
+                    return;
+                }
+            }
+        }
+
+        if (aiDifficulty.equals(getResources().getString(R.string.aiDifficulty2))) {
+            final int[] move = miniMaxAI.move();
+            onClick(board.cells[move[0]][move[1]].button);
         }
     }
 
