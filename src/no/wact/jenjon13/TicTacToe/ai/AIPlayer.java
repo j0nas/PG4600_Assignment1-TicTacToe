@@ -1,4 +1,4 @@
-package no.wact.jenjon13.TicTacToe.abstracts;
+package no.wact.jenjon13.TicTacToe.ai;
 
 import no.wact.jenjon13.TicTacToe.models.Board;
 import no.wact.jenjon13.TicTacToe.models.Cell;

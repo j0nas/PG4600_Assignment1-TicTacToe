@@ -21,8 +21,6 @@ public class GameHistoryActivity extends ListActivity {
         setContentView(R.layout.gamehistory);
 
         highscoreValues.clear();
-//        highscoreValues.addAll((Collection<? extends String>) getSharedPreferences(getResources().getString(R
-// .string.highscores), MODE_PRIVATE).getAll().values());
         final SharedPreferences sharedPrefs =
                 getSharedPreferences(getResources().getString(R.string.highscores), MODE_PRIVATE);
         for (int i = 0; i < 5; i++) {
