@@ -43,6 +43,6 @@
         two players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three
         respective marks in a horizontal, vertical, or diagonal row wins the game.\"
     </string>
-    <string name="boardfragment_gamelog">Game Log</string>
+    <string name="boardfragment_gamelog">Highscores</string>
     <string name="highscores">highscores</string>
 </resources>
