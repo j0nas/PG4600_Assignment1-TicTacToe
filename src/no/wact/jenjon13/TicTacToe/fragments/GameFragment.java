@@ -1,6 +1,8 @@
 package no.wact.jenjon13.TicTacToe.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,19 +19,21 @@ import no.wact.jenjon13.TicTacToe.ai.MiniMaxAI;
 import no.wact.jenjon13.TicTacToe.configs.Config;
 import no.wact.jenjon13.TicTacToe.models.Board;
 import no.wact.jenjon13.TicTacToe.models.Cell;
+import no.wact.jenjon13.TicTacToe.models.Score;
 import no.wact.jenjon13.TicTacToe.models.Sign;
 import no.wact.jenjon13.TicTacToe.utilities.ImgUtils;
 
+import java.util.Iterator;
+import java.util.TreeSet;
+
 public class GameFragment extends Fragment implements View.OnClickListener {
+    private static final TreeSet<Score> scores = new TreeSet<>();
     private boolean crossTurn = true;
     private String aiDifficulty = null;
-
     private Board board = new Board(Config.GRID_WIDTH, Config.GRID_HEIGHT);
     private MiniMaxAI miniMaxAI = new MiniMaxAI(board, crossTurn ? Sign.NOUGHT : Sign.CROSS);
     private View containView;
-
     private long roundTime;
-
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle
@@ -45,6 +49,21 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         }
 
         resetUi();
+
+        // Parse all highscores and add them to the scores member.
+        final SharedPreferences highscorePrefs = getActivity()
+                .getSharedPreferences(getActivity().getResources()
+                        .getString(R.string.highscores), Context.MODE_PRIVATE);
+
+        for (int j = 0; j < 5; j++) {
+            final String highscore = highscorePrefs.getString("highscore_" + j, null);
+            if (highscore != null) {
+                Log.v("onCreateView", "Loaded highscore: " + highscore);
+                final String[] split = highscore.split(" ");
+                scores.add(new Score(split[2], split.length > 8 ? split[8].charAt(0) + "" : null,
+                        Integer.valueOf(split[4].substring(0, split[4].length() - 2))));
+            }
+        }
 
         final SharedPreferences sharedPrefs =
                 getActivity()
@@ -88,6 +107,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     private void resetUi() {
         setGameStatus(null);
         containView.findViewById(R.id.btnRematch).setVisibility(View.GONE);
+        containView.findViewById(R.id.btnGamelog).setVisibility(View.GONE);
         crossTurn = true;
 
         final TextView player1txt = (TextView) containView.findViewById(R.id.gamePlayer1Text);
@@ -115,11 +135,11 @@ public class GameFragment extends Fragment implements View.OnClickListener {
                     Log.v("onClick", "Clicked btnRematch");
                     resetUi();
                     return;
-//                case R.id.btnBoard_back:
-//                    Log.v("onClick", "Clicked btnMainMenu");
-//                    resetUi();
-//                    startActivity(new Intent(getActivity(), MainMenuActivity.class));
-//                    return; TODO
+                case R.id.btnGamelog:
+                    Log.v("onClick", "Clicked btnGamelog");
+                    resetUi();
+                    startActivity(new Intent(getActivity(), GameHistoryActivity.class));
+                    return;
             }
         }
 
@@ -163,16 +183,36 @@ public class GameFragment extends Fragment implements View.OnClickListener {
                                             getActivity().MODE_PRIVATE)
                                     .getString(playerNameId, "N/A");
 
-            GameHistoryActivity.addNewScore(playerName,
-                    (int) (System.currentTimeMillis() - roundTime), aiDifficulty);
+            rewriteHighscores(playerName, (int) (System.currentTimeMillis() - roundTime));
+
 
             setGameStatus(winner);
             containView.findViewById(R.id.btnRematch).setVisibility(View.VISIBLE);
+            containView.findViewById(R.id.btnGamelog).setVisibility(View.VISIBLE);
             board.disableAllButtons();
             return true;
         }
 
         return false;
+    }
+
+    private void rewriteHighscores(String playerName, int time) {
+        scores.add(new Score(playerName, aiDifficulty, time));
+        Log.v("rewriteHighscores", String.valueOf(scores.size()));
+        final SharedPreferences.Editor edit = getActivity()
+                .getSharedPreferences(getResources().getString(R.string.highscores), Context.MODE_PRIVATE)
+                .edit();
+
+        edit.clear();
+        final Iterator<Score> iterator = scores.iterator();
+        int i = 0;
+        while (iterator.hasNext() && i < 5) {
+            final String value = iterator.next().toString();
+            Log.v("rewriteHighscores", "Putting: " + value + " @ highscore_" + i);
+            edit.putString("highscore_" + i++, value);
+        }
+
+        edit.commit();
     }
 
     private void setGameStatus(Sign winner) {
@@ -191,7 +231,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
                     aiDifficulty == null ?
                             sharedPreferences.getString(getResources().getString(R.string.player2name),
                                     getResources().getString(R.id.txtPlayer2Name)) : getString(R.string.vsCPU));
-            txtWinner.append(getResources().getString(R.string.wonAppend));
+            txtWinner.append(" " + getResources().getString(R.string.wonAppend));
         }
     }
 

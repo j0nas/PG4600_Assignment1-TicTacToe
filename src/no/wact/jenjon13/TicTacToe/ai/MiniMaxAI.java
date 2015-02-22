@@ -7,6 +7,15 @@ import no.wact.jenjon13.TicTacToe.models.Sign;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class and its contained functionaliy is heavily based on the following sources:
+ * - Nanyang Technological University: Java Graphics Tutorial - Case Study on Tic-Tac-Toe Part 2: With AI
+ * > https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html last visited 22.02.2015
+ * - Wikipedia: Minimax
+ * > http://en.wikipedia.org/wiki/Minimax last visited @ 22.02.2015
+ * <p>
+ * Please refer to the documentation for further notes.
+ */
 public class MiniMaxAI extends AIPlayer {
     /**
      * AIPlayer using Minimax algorithm
@@ -177,6 +186,7 @@ public class MiniMaxAI extends AIPlayer {
 
     /**
      * Checks if the given Sign has won.
+     *
      * @param sign The Sign to check win for.
      * @return True if a win was detected for the Sign, false otherwise.
      */

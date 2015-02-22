@@ -10,7 +10,7 @@
 
     <string name="btnback">Back</string>
     <string name="difficulty">difficulty</string>
-    <string name="wonAppend"> won!</string>
+    <string name="wonAppend">won!</string>
     <string name="player1name">player1name</string>
     <string name="player2name">player2name</string>
     <string name="sharedPrefs">TicTacToe_Preferences</string>
@@ -43,4 +43,6 @@
         two players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three
         respective marks in a horizontal, vertical, or diagonal row wins the game.\"
     </string>
+    <string name="boardfragment_gamelog">Game Log</string>
+    <string name="highscores">highscores</string>
 </resources>

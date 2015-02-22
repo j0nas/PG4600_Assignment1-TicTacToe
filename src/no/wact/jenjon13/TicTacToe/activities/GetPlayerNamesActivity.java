@@ -42,10 +42,12 @@ public class GetPlayerNamesActivity extends Activity implements View.OnClickList
                 final String sharedPrefs = getResources().getString(R.string.sharedPrefs);
                 getSharedPreferences(sharedPrefs, MODE_PRIVATE)
                         .edit()
-                        .putString(sharedPrefs, ((TextView) findViewById(R.id.txtPlayer1Name))
+                        .putString(getResources().getString(R.string.player1name), ((TextView) findViewById(R.id
+                                .txtPlayer1Name))
                                 .getText()
                                 .toString())
-                        .putString(sharedPrefs, ((TextView) findViewById(R.id.txtPlayer2Name))
+                        .putString(getResources().getString(R.string.player2name), ((TextView) findViewById(R.id
+                                .txtPlayer2Name))
                                 .getText()
                                 .toString())
                         .commit();

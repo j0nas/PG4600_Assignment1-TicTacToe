@@ -165,6 +165,13 @@
         android:text="@string/game_rematch"
         android:visibility="invisible" />
 
+    <Button
+        android:id="@+id/btnGamelog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boardfragment_gamelog"
+        android:visibility="invisible"/>
+
     <fragment
         android:id="@+id/backbtnFragment"
         android:name="no.wact.jenjon13.TicTacToe.fragments.BackBtnFragment"
