@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/about_txtTitle"
@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="75dp"
         android:text="@string/app_name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/about_txtAuthor"
@@ -23,7 +23,7 @@
         android:gravity="center_horizontal"
         android:linksClickable="false"
         android:text="@string/about_authortxt"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <TextView
         android:id="@+id/about_txtWikiquote"
@@ -36,7 +36,7 @@
         android:padding="10dp"
         android:text="@string/about_wikiquotetxt"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="italic" />
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/about_txtWikiquoteSource"
@@ -46,7 +46,7 @@
         android:layout_below="@+id/about_txtWikiquote"
         android:padding="10dp"
         android:text="@string/about_wikiquotesourcetxt"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <fragment
         android:id="@+id/backbtnFragment"
@@ -54,5 +54,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        tools:layout="@layout/backbtnfragment" />
+        tools:layout="@layout/backbtnfragment"/>
 </RelativeLayout>

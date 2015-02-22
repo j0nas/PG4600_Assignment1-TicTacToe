@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_vertical"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/layoutMainMenu"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/btnStart1pGame"
-            android:text="@string/start_twoplayer_game" />
+            android:text="@string/start_twoplayer_game"/>
 
         <Button
             android:id="@+id/btnStart1pGame"
@@ -26,7 +26,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_horizontal"
-            android:text="@string/start_oneplayer_game" />
+            android:text="@string/start_oneplayer_game"/>
 
         <TextView
             android:id="@+id/txtMainMenu_Title"
@@ -36,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="73dp"
             android:text="@string/mainmenu_gametitle"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <Button
             android:id="@+id/btnAboutGame"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnStart2pGame"
             android:layout_centerHorizontal="true"
-            android:text="@string/mainmenu_abouthelp" />
+            android:text="@string/mainmenu_abouthelp"/>
 
         <Button
             android:id="@+id/btnHighScores"
@@ -52,6 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnAboutGame"
             android:layout_centerHorizontal="true"
-            android:text="@string/mainmenu_highscores" />
+            android:text="@string/mainmenu_highscores"/>
     </RelativeLayout>
 </LinearLayout>
